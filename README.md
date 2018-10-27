@@ -1,5 +1,4 @@
 
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://gus.mit-license.org/)
 
 # Keras Tutorial
 
