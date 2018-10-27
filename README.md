@@ -6,7 +6,7 @@
 #### Table of Content
 
 #### Introduction
-* [Introduction To Deep Learning](#IntroductionToDeepLearning)
+* [Introduction To Deep Learning](#1)
 * Biological Neural Networks
 * Artificial Neural Networks - Forward Propagation
 
@@ -37,6 +37,6 @@
 * Recurrent Neural Networks
 * Time Series Prediction
 
-#### <a id="IntroductionToDeepLearning"></a>Introduction To Deep Learning
+#### <a id="1"></a>Introduction To Deep Learning
 kasudhf
 
