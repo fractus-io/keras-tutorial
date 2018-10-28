@@ -17,6 +17,7 @@
 
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
+  * [How to install Keras](#311)
 * Multi-Layer Perceptrons
 * Develop Your First Neural Network with Keras
 
@@ -60,4 +61,16 @@ Keras guiding principles:
 
 * **Python** Models are described in Python code, which is compact, easier to debug, and allows for ease of extensibility.
 
+##### <a id="311"></a>How to install Keras
 
+Keras can be installed using **pip**, as follows:
+
+```
+$ sudo pip install keras
+```
+
+You can which version of Keras is installed using the following script:
+
+```
+$ python -c "import keras; print(keras.__version__)"
+```
