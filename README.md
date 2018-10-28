@@ -17,7 +17,9 @@
 
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
-  * [How to install Keras](#311)
+  * [What is TensorFlow](#311)
+  * [What is Theano](#312)
+  * [How to install Keras](#313)
 * Multi-Layer Perceptrons
 * Develop Your First Neural Network with Keras
 
@@ -61,7 +63,14 @@ Keras guiding principles:
 
 * **Python** Models are described in Python code, which is compact, easier to debug, and allows for ease of extensibility.
 
-##### <a id="311"></a>How to install Keras
+##### <a id="311"></a>What is TensorFlow
+
+Created by the Google Brain team, TensorFlow is an open source library for numerical computation and large-scale machine learning. TensorFlow bundles together a slew of machine learning and deep learning (aka neural networking) models and algorithms and makes them useful by way of a common metaphor. It uses Python to provide a convenient front-end API for building applications with the framework, while executing those applications in high-performance C++.
+
+
+##### <a id="312"></a>What is Theano
+
+##### <a id="313"></a>How to install Keras
 
 Keras can be installed using **pip**, as follows:
 
