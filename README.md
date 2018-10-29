@@ -84,7 +84,7 @@ and CNTK (https://github.com/Microsoft/CNTK) is developed by Microsoft.
 Any piece of code is developed with Keras can be run with any of these back-ends without
 having to change anything in the code.
 
-During our tutorial we will use TensorFlow back-end for most of our, because it’s the most widely adopted,
+During our tutorial we will use TensorFlow back-end for most of our deep learning needs, because it’s the most widely adopted,
 scalable, and production ready. In addition using TensorFlow (or Theano, or CNTK), Keras is able to run on both
 CPUs and GPUs. 
 
