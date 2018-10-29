@@ -17,9 +17,8 @@
 
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
-  * [What is TensorFlow](#311)
-  * [What is Theano](#312)
-  * [How to install Keras](#313)
+  * [Keras, TensorFlow, Theano, and CNTK](#311)
+  * [How to install Keras](#312)
 * Multi-Layer Perceptrons
 * Develop Your First Neural Network with Keras
 
@@ -66,14 +65,31 @@ Keras is based on following guiding principles:
 Keras is distributed under MIT license, meaning that it can be freely used in commercial projects. It's compatable with any version of the Python from 2.7 to 3.6.
 Keras has more then 200 000 users, and it is used by Google, Netflix, Uber and hundreds if startups. Keras is also popular framework on Kaggle, the machine-learning competition website, where almost every deep learning competition has been won using Keras models.
 
-##### <a id="311"></a>What is TensorFlow
+##### <a id="311"></a>Keras, TensorFlow, Theano, and CNTK
 
-Created by the Google Brain team, TensorFlow is an open source library for numerical computation and large-scale machine learning. TensorFlow bundles together a slew of machine learning and deep learning (aka neural networking) models and algorithms and makes them useful by way of a common metaphor. It uses Python to provide a convenient front-end API for building applications with the framework, while executing those applications in high-performance C++.
+Keras provides high-level building blocks for developing
+deep-learning models. Instead of handling low-level operations such as tensor manipulation, 
+Keras relies on a specialized, well-optimized tensor
+library to do so, serving as the back-end engine of Keras.
+
+Several different back-end engines can be plugged into Keras. 
+Currently, the three existing back-end implementations
+are the TensorFlow back-end, the Theano back-end, and the Microsoft Cognitive
+Toolkit (CNTK) back-end. Those back-ends are some of the primary platforms for deep learning these days. 
+
+Theano (http://deeplearning.net/software/theano) is developed by the MILA
+lab at Université de Montréal, TensorFlow (www.tensorflow.org) is developed by Google,
+and CNTK (https://github.com/Microsoft/CNTK) is developed by Microsoft. 
+
+Any piece of code is developed with Keras can be run with any of these back-ends without
+having to change anything in the code.
+
+During our tutorial we will use TensorFlow back-end for most of our, because it’s the most widely adopted,
+scalable, and production ready. In addition using TensorFlow (or Theano, or CNTK), Keras is able to run on both
+CPUs and GPUs. 
 
 
-##### <a id="312"></a>What is Theano
-
-##### <a id="313"></a>How to install Keras
+##### <a id="312"></a>How to install Keras
 
 Keras can be installed using **pip**, as follows:
 
