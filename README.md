@@ -91,14 +91,67 @@ CPUs and GPUs.
 
 ##### <a id="312"></a>How to install Keras
 
-Keras can be installed using **pip**, as follows:
+
+###### Install useful dependencies
+
+First, we will install useful dependencies:
+
+ * **numpy**, a package which provides support for large, multidimensional arrays and matrices as well as high-level mathematical functions
+ * **scipy**, a library used for scientific computation
+ * **scikit-learn**, a package used for data exploration
+ 
+Optionally, it could be useful to install:
+ 
+ * **pillow**, a library useful for image processing
+ * **h5py**, a library useful for data serialization used by Keras for model saving
+
+Mentioned dependencies can be installed with single command:
 
 ```
-$ sudo pip install keras
+pip install numpy scipy scikit-learn pillow h5py
 ```
+
+###### Install Theano
+
+Theano can be installed with command:
+
+```
+pip install Theano
+```
+
+###### Install Tensorflow
+
+Note: TensorFlow only supports 64-bit Python 3.5.x on Windows.
+Tensorflow can be installed with command:
+
+```
+pip install tensorflow
+```
+
+Note: this command will install CPU version.
+You can find explanation how to install GPU version of the TensorFlow at ...
+
+###### Install Keras
+
+Keras can be installed with command:
+
+```
+pip install keras
+```
+
 
 You can which version of Keras is installed using the following script:
 
 ```
-$ python -c "import keras; print(keras.__version__)"
+python -c "import keras; print(keras.__version__)"
+```
+
+Output on my environment will be
+```
+2.2.4
+```
+
+Also you can upgrade your installation of Keras using command:
+```
+pip install --upgrade keras
 ```
