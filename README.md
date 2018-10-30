@@ -18,7 +18,8 @@
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
   * [Keras, TensorFlow, Theano, and CNTK](#311)
-  * [How to install Keras](#312)
+  * [Installing Keras](#312)
+  * [Configuring Keras](#313)
 * Multi-Layer Perceptrons
 * Develop Your First Neural Network with Keras
 
@@ -89,7 +90,7 @@ scalable, and production ready. In addition using TensorFlow (or Theano, or CNTK
 CPUs and GPUs. 
 
 
-##### <a id="312"></a>How to install Keras
+##### <a id="312"></a>Installing Keras
 
 
 ###### Install useful dependencies
@@ -155,3 +156,46 @@ Also you can upgrade your installation of Keras using command:
 ```
 pip install --upgrade keras
 ```
+
+##### <a id="313"></a>Configuring Keras
+
+
+Keras is configured via json configuration file. 
+If you have run Keras at least once, you will find the Keras configuration file at:
+
+```
+$HOME/.keras/keras.json
+```
+
+NOTE for Windows Users: Please replace **$HOME** with **%USERPROFILE%**.
+
+The default configuration file looks like this:
+```
+{
+    "floatx": "float32",
+    "epsilon": 1e-07,
+    "backend": "tensorflow",
+    "image_data_format": "channels_last"
+}
+```
+
+Json file consist of the key/value pairs as follows:
+
+ * **epsilon**, type: Float, a numeric fuzzing constant used to avoid dividing by zero in some operations
+ * **floatx**, type: String, values: **float16**, **float32**, or **float64**. Default float precision.
+ * **backend**, type: String, values: **tensorflow**, **theano**, or **cntk**. Default back-end.
+ * **image_data_format**, type: String, values: **channels_last** or **channels_first**. Image data format.
+
+###### A quick note on **image_data_format**
+
+Using TensorFlow, images are represented as NumPy arrays with the shape (height, width, depth), 
+where the depth is the number of channels in the image.
+
+However, if you are using Theano, images are instead assumed to be represented as (depth, height, width).
+
+This little nuance is the source of a lot of headaches when using Keras.
+So, when your model is working wit images and if you are getting strange results when using 
+Keras(or an error message related to the shape of a given tensor) you should:
+
+ * Check your back-end
+ * Ensure your image dimension ordering matches your back-end
