@@ -13,11 +13,11 @@ def getModel():
     model = Sequential()
     
     # Adding the input layer and the first hidden layer
-    model.add(Dense(6, activation = 'relu', input_dim = 11))
+    model.add(Dense(6, init = 'uniform', activation = 'relu', input_dim = 11))
     # Adding the second hidden layer
-    model.add(Dense(6, activation = 'relu'))
+    model.add(Dense(6, init = 'uniform', activation = 'relu'))
     # Adding the output layer
-    model.add(Dense(1, activation = 'sigmoid'))
+    model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))
 
     return model
 
