@@ -13,6 +13,8 @@ local.properties
 target/
 .loadpath
 
+__pycache__
+
 .bash_profile
 
 # Eclipse Core
