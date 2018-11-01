@@ -26,13 +26,14 @@ def main():
     # compile model   
     model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     
-    # fir the model
-    model.fit(X, Y,  validation_split=0.33, batch_size = 10, epochs = 100)
+    # fit the model
+    model.fit(X, Y, batch_size = 10, epochs = 100)
     
     # evaluate the model
     scores = model.evaluate(X, Y)
     print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
-        
+    
+
+    
 if __name__ == '__main__':    
     main()
-
