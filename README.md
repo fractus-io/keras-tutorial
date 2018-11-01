@@ -100,6 +100,7 @@ First, we will install useful dependencies:
  * **numpy**, a package which provides support for large, multidimensional arrays and matrices as well as high-level mathematical functions
  * **scipy**, a library used for scientific computation
  * **scikit-learn**, a package used for data exploration
+ * **pandas**, a library used for data manipulation and analysis
  
 Optionally, it could be useful to install:
  
@@ -109,7 +110,7 @@ Optionally, it could be useful to install:
 Mentioned dependencies can be installed with single command:
 
 ```
-pip install numpy scipy scikit-learn pillow h5py
+pip install numpy scipy scikit-learn pandas pillow h5py
 ```
 
 ###### Install Theano
