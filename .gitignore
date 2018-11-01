@@ -13,8 +13,6 @@ local.properties
 target/
 .loadpath
 
-*.py
-
 .bash_profile
 
 # Eclipse Core
