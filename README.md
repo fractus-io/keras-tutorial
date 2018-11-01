@@ -6,7 +6,7 @@
 
 #### Introduction
 * [Introduction To Deep Learning](#1)
-* Biological Neural Networks
+* Biologicals
 * Artificial Neural Networks - Forward Propagation
 
 #### Artificial Neural Networks
@@ -203,7 +203,7 @@ Keras(or an error message related to the shape of a given tensor) you should:
 
 ##### <a id="331"></a>Develop Your First Neural Network with Keras
 
-Developing neural network with Keras is straightforward. 
+Developing Neural Network with Keras is straightforward. 
 In principle you need to execute following steps:
 
 1. Load data
@@ -213,7 +213,7 @@ In principle you need to execute following steps:
 5. Fit Model
 6. Evaluate Model
 
-Goal of our neural network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
+Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
 This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
 
 We will use dataset from bank which contains historical behavior of the customer. Dataset has 10000 rows with 14 columns. 
@@ -297,13 +297,13 @@ X = sc.fit_transform(X)
 	
 ```
 
-Finally data are prepared, so we can start to model our neural network.
+Finally data are prepared, so we can start to model our Neural Network.
 
 ###### Define Model
 
 Models in Keras are deﬁned as a sequence of layers. 
 
-For our case we will build simple fully-connected neural network, with 3 layers, input layer, one hidden layer and output layer.
+For our case we will build simple fully-connected Neural Network, with 3 layers, input layer, one hidden layer and output layer.
 
 First we create a Sequential model and add layers. 
 Fully connected layers are deﬁned using the Dense class, where we need to define following parameters:
@@ -326,3 +326,28 @@ model.add(Dense(6, init = 'uniform', activation = 'relu'))
 # Adding the output layer
 model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))	
 ```
+
+###### Compile Model
+
+Now that the model is deﬁned, we can compile it. 
+Compiling the model uses the eﬃcient numerical libraries under the covers (the so-called back-end) such as **Theano** or **TensorFlow**. 
+The back-end automatically chooses the best way to represent the network for training and making predictions to run on your hardware. 
+
+Training a network means ﬁnding the best set of weights to make predictions for this problem. 
+When compiling, we must specify some  properties required when training the network. 
+
+First argument is **Optimizer**, this is nothing but the algorithm you wanna use to find optimal set of weights.
+During model definition phase we already initialized weights, but now we are applying some sort of algorithm which will optimize weights in turn making out Neural Network more powerful. 
+This algorithm is **Stochastic Gradient descent(SGD)**. 
+Among several types of **SGD** algorithm the one which we will use is **Adam**. 
+If you go in deeper detail of **SGD**, you will find that **SGD** depends on **loss** thus our second parameter is **loss**. 
+Since out dependent variable is binary, we will have to use logarithmic loss function called **binary_crossentropy**.
+We want to improve performance of our Neural Network based on accuracy so we add metrics **parameter** as **accuracy**.
+
+```
+model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])	
+```
+
+Congratulations, you have build your first Deep Learning Neural Network model.
+Our Neural Network is now ready to be trained.
+
