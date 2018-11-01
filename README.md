@@ -21,7 +21,7 @@
   * [Installing Keras](#312)
   * [Configuring Keras](#313)
 * Multi-Layer Perceptrons
-* Develop Your First Neural Network with Keras
+* [Develop Your First Neural Network with Keras](#331)
 
 #### Deep Learning Models
 * Shallow and Deep Neural Networks
@@ -200,3 +200,101 @@ Keras(or an error message related to the shape of a given tensor) you should:
 
  * Check your back-end
  * Ensure your image dimension ordering matches your back-end
+
+##### <a id="331"></a>Develop Your First Neural Network with Keras
+
+Developing neural network with Keras is straightforward. 
+In principle you need to execute following steps:
+
+1. Load data
+2. Prepare data
+3. Define Model
+4. Compile Model
+5. Fit Model
+6. Evaluate Model
+
+Goal of our neural network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
+This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
+
+We will use dataset from bank which contains historical behavior of the customer. Dataset has 10000 rows with 14 columns. 
+The input variables describes bank customer with following attributes:
+ * RowNumber    
+ * CustomerId    
+ * Surname    
+ * CreditScore    
+ * Geography    
+ * Gender    
+ * Age    
+ * Tenure    
+ * Balance    
+ * NumOfProducts    
+ * HasCrCard    
+ * IsActiveMember    
+ * EstimatedSalary    
+ * Exited
+
+First few rows from the dataset looks as follows:
+
+```
+RowNumber,CustomerId,Surname,CreditScore,Geography,Gender,Age,Tenure,Balance,NumOfProducts,HasCrCard,IsActiveMember,EstimatedSalary,Exited
+1,15634602,Hargrave,619,France,Female,42,2,0,1,1,1,101348.88,1
+2,15647311,Hill,608,Spain,Female,41,1,83807.86,1,0,1,112542.58,0
+3,15619304,Onio,502,France,Female,42,8,159660.8,3,1,0,113931.57,1
+4,15701354,Boni,699,France,Female,39,1,0,2,0,0,93826.63,0
+5,15737888,Mitchell,850,Spain,Female,43,2,125510.82,1,1,1,79084.1,0
+6,15574012,Chu,645,Spain,Male,44,8,113755.78,2,1,0,149756.71,1
+```
+
+###### Load data
+
+For loading a data we will use Pandas DataFrame which gives us elegant interface for loading.
+Dataset is attached to git repo. 
+
+```
+dataset = pd.read_csv('Churn_Modelling.csv')```
+```
+
+###### Prepare data
+
+As we already mentioned dataset has 14 columns, but columns **RowNumber** and **CustomerId** are not useful for our analysis, so we will exclude them.
+Column **Exited** is our target variable.
+
+```
+X = dataset.iloc[:, 3:13].values
+Y = dataset.iloc[:, 13].values
+```
+
+**Country** column has string labels such as **France, Spain, Germany** while **Gender** column has **Male, Female**. 
+We have to encode those strings into numeric and we can simply do it using pandas but here library called **ScikitLearn**(strong ML library in Python) are introduced.
+We will use **LabelEncoder**. As the name suggests, whenever we pass a variable to this function, this function will automatically encode different labels in that column with values 
+between 0 to n_classes-1.
+
+```
+labelencoder_X_1 = LabelEncoder()
+X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
+labelencoder_X_2 = LabelEncoder()
+X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])```
+```
+
+**Gender** is binary, so label encoding is OK, but for column **Country**, label encoding has introduced new problem in our data. 
+**LabelEncoder** has replaced **France** with 0, **Germany** 1 and **Spain** 2 but **Germany** is not higher than **France** and **France**
+ is not smaller than **Spain** so we need to create a dummy variable for **Country**. Dummy variable is difficult concept, but again we will use **ScikitLearn** library which provides **OneHotEncoder** function.
+
+```
+onehotencoder = OneHotEncoder(categorical_features = [1])
+X = onehotencoder.fit_transform(X).toarray()
+X = X[:, 1:]
+```
+
+Now, if you carefully observe data, you will see that data is not scaled properly. 
+Some variables has value in thousands while some have value is tens or ones. 
+We don’t want any of our variable to dominate on other so let’s go and scale data.
+we will use **StandardScaler** from **ScikitLearn** library. 
+
+```
+sc = StandardScaler()
+X = sc.fit_transform(X)
+	
+```
+
+Finally data are prepared, so we can start to model our neural network.
