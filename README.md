@@ -251,7 +251,7 @@ For loading a data we will use Pandas DataFrame which gives us elegant interface
 Dataset is attached to git repo. 
 
 ```
-dataset = pd.read_csv('Churn_Modelling.csv')```
+dataset = pd.read_csv('Churn_Modelling.csv')
 ```
 
 ###### Prepare data
@@ -273,7 +273,7 @@ between 0 to n_classes-1.
 labelencoder_X_1 = LabelEncoder()
 X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])
 labelencoder_X_2 = LabelEncoder()
-X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])```
+X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])
 ```
 
 **Gender** is binary, so label encoding is OK, but for column **Country**, label encoding has introduced new problem in our data. 
@@ -298,3 +298,31 @@ X = sc.fit_transform(X)
 ```
 
 Finally data are prepared, so we can start to model our neural network.
+
+###### Define Model
+
+Models in Keras are deﬁned as a sequence of layers. 
+
+For our case we will build simple fully-connected neural network, with 3 layers, input layer, one hidden layer and output layer.
+
+First we create a Sequential model and add layers. 
+Fully connected layers are deﬁned using the Dense class, where we need to define following parameters:
+
+First parameter is **output_dim**. It is simply the number of nodes you want to add to this layer.  
+In Neural Network we need to assign weights to each mode which is nothing but importance of that node. 
+At the time of initialization, weights should be close to 0 and we will randomly initialize weights using **uniform** function. 
+
+For input layer we have to define right number of inputs. 
+This can be speciﬁed when creating the ﬁrst layer with the **input_dim**. Remember in our case total number of input variables are 11.
+Second layer model automatically knows the number of input variables from the first hidden layer.
+
+For first two layers we will use **relu** activation functions, and since we want binary result from output layer, the in last layer we will use **sigmoid** activation function.
+
+```
+# Adding the input layer and the first hidden layer
+model.add(Dense(6, init = 'uniform', activation = 'relu', input_dim = 11))
+# Adding the second hidden layer
+model.add(Dense(6, init = 'uniform', activation = 'relu'))
+# Adding the output layer
+model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))	
+```
