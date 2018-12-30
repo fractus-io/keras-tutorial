@@ -142,18 +142,18 @@ pip install keras
 ```
 
 
-You can which version of Keras is installed using the following script:
+You can check which version of Keras is installed with the following script:
 
 ```
 python -c "import keras; print(keras.__version__)"
 ```
 
-Output on my environment will be
+Output on my environment is:
 ```
 2.2.4
 ```
 
-Also you can upgrade your installation of Keras using command:
+Also you can upgrade your installation of Keras with:
 ```
 pip install --upgrade keras
 ```
@@ -170,7 +170,7 @@ $HOME/.keras/keras.json
 
 NOTE for Windows Users: Please replace **$HOME** with **%USERPROFILE%**.
 
-The default configuration file looks like this:
+The default configuration file looks like:
 ```
 {
     "floatx": "float32",
@@ -338,10 +338,10 @@ When compiling, we must specify some  properties required when training the netw
 
 First argument is **Optimizer**, this is nothing but the algorithm you wanna use to find optimal set of weights.
 During model definition phase we already initialized weights, but now we are applying some sort of algorithm which will optimize weights in turn making out Neural Network more powerful. 
-This algorithm is **Stochastic Gradient descent(SGD)**. 
+This algorithm is **Stochastic Gradient Descent(SGD)**. 
 Among several types of **SGD** algorithm the one which we will use is **Adam**. 
-If you go in deeper detail of **SGD**, you will find that **SGD** depends on **loss** thus our second parameter is **loss**. 
-Since out dependent variable is binary, we will have to use logarithmic loss function called **binary_crossentropy**.
+If you go in deeper detail of **SGD**, you will find that **SGD** depends on **loss**, thus our second parameter is **loss**. 
+Since output variable is binary, we will have to use logarithmic loss function called **binary_crossentropy**.
 We want to improve performance of our Neural Network based on accuracy so we add metrics **parameter** as **accuracy**.
 
 ```
