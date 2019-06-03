@@ -17,7 +17,7 @@ def main():
     # import dataset 
     dataset = pd.read_csv('Churn_Modelling.csv')
 
-    # prepareDate
+    # prepare data set
     X, Y = utils.prepareData(dataset)
             
     # create model        
@@ -34,6 +34,5 @@ def main():
     print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
     
 
-    
 if __name__ == '__main__':    
     main()
