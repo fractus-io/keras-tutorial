@@ -42,58 +42,71 @@
 #### <a id="1"></a>Introduction To Deep Learning
 ...
 
-#### <a id="31"></a>Introduction To Keras
+## <a id="31"></a>Introduction To Keras
 
-Keras is a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano. It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to doing good research. Kears runs on Python 2.7 or 3.6 and can seamlessly execute on GPUs and CPUs given the underlying frameworks. Keras was initially developed for researchers, with the aim of enabling fast experimentation.
+Keras is a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano. 
+It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to 
+doing good research. Kears runs on Python 2.7 or 3.6 and can seamlessly execute on GPUs and CPUs given the underlying frameworks. 
+Keras was initially developed for researchers, with the aim of enabling fast experimentation.
 
-Kerashas is following features:
+Keras has following features:
 
 * Allows easy and fast prototyping (through user friendliness, modularity, and extensibility).
 * Supports both convolutional networks and recurrent networks, as well as combinations of the two.
 * Runs seamlessly on CPU and GPU.
 
-Keras was developed as part of the research effort of project ONEIROS (Open-ended Neuro-Electronic Intelligent Robot Operating System), and its primary author and maintainer is François Chollet, a Google engineer.
+Keras was developed as part of the research effort of project ONEIROS (Open-ended Neuro-Electronic Intelligent Robot Operating System), 
+and its primary author and maintainer is François Chollet, a Google engineer.
 
 Keras is based on following guiding principles:
-* **User friendliness** Keras is an API designed for human beings, not machines. Keras follows best practices for reducing cognitive load: it offers consistent & simple APIs, it minimizes the number of user actions required for common use cases, and it provides clear and actionable feedback upon user error.
+* **User friendliness**    
+	Keras is an API designed for human beings, not machines. Keras follows best practices for reducing cognitive load: it offers consistent & simple 
+	APIs, it minimizes the number of user actions required for common use cases, and it provides clear and actionable feedback upon user error.
 
-* **Modularity** A model is understood as a sequence or a graph of standalone, fully-configurable modules that can be plugged together with as few restrictions as possible. In particular, neural layers, cost functions, optimizers, initialization schemes, activation functions, regularization schemes are all standalone modules that you can combine to create new models.
+* **Modularity**    
+	A model is understood as a sequence or a graph of standalone, fully-configurable modules that can be plugged together with as few restrictions 
+	as possible. In particular, neural layers, cost functions, optimizers, initialization schemes, activation functions, 
+	regularization schemes are all standalone modules that you can combine to create new models.
 
-* **Extensibility** New modules are easy to add (as new classes and functions). 
+* **Extensibility**   
+	New modules are easy to add (as new classes and functions). 
 
-* **Python** Models are described in Python code, which is compact, easier to debug, and allows for ease of extensibility.
+* **Python**  
+	Models are described in Python code, which is compact, easier to debug, and allows for ease of extensibility.
 
-Keras is distributed under MIT license, meaning that it can be freely used in commercial projects. It's compatable with any version of the Python from 2.7 to 3.6.
-Keras has more then 200 000 users, and it is used by Google, Netflix, Uber and hundreds if startups. Keras is also popular framework on Kaggle, the machine-learning competition website, where almost every deep learning competition has been won using Keras models.
+Keras is distributed under MIT license, meaning that it can be freely used in commercial projects. It's compatable with any version of the 
+Python from 2.7 to 3.6.
+Keras has more then 200 000 users, and it is used by Google, Netflix, Uber and hundreds if startups. Keras is also popular framework on Kaggle, 
+the machine-learning competition website, where almost every deep learning competition has been won using Keras models.
 
-##### <a id="311"></a>Keras, TensorFlow, Theano, and CNTK
+### <a id="311"></a>Keras, TensorFlow, Theano, and CNTK
 
-Keras provides high-level building blocks for developing
-deep-learning models. Instead of handling low-level operations such as tensor manipulation, 
-Keras relies on a specialized, well-optimized tensor
-library to do so, serving as the back-end engine of Keras.
+Keras provides high-level building blocks for developing deep-learning models. Instead of handling low-level operations such as tensor manipulation, 
+Keras relies on a specialized, well-optimized tensor library to do so, serving as the back-end engine of Keras.
 
 Several different back-end engines can be plugged into Keras. 
-Currently, the three existing back-end implementations
-are the TensorFlow back-end, the Theano back-end, and the Microsoft Cognitive
-Toolkit (CNTK) back-end. Those back-ends are some of the primary platforms for deep learning these days. 
+Currently, the three existing back-end implementations are:
+* TensorFlow back-end
+* Theano back-end
+* Microsoft Cognitive Toolkit (CNTK) back-end. 
 
-Theano (http://deeplearning.net/software/theano) is developed by the MILA
-lab at Université de Montréal, TensorFlow (www.tensorflow.org) is developed by Google,
+Those back-ends are some of the primary platforms for deep learning these days. 
+
+Theano (http://deeplearning.net/software/theano) is developed by the MILA lab at Université de Montréal, 
+TensorFlow (www.tensorflow.org) is developed by Google,
 and CNTK (https://github.com/Microsoft/CNTK) is developed by Microsoft. 
 
-Any piece of code is developed with Keras can be run with any of these back-ends without
-having to change anything in the code.
+Any piece of code is developed with Keras can be run with any of these back-ends without having to change anything in the code.
 
 During our tutorial we will use TensorFlow back-end for most of our deep learning needs, because it’s the most widely adopted,
-scalable, and production ready. In addition using TensorFlow (or Theano, or CNTK), Keras is able to run on both
-CPUs and GPUs. 
+scalable, and production ready. 
+In addition using TensorFlow (or Theano, or CNTK), Keras is able to run on both CPUs and GPUs. 
 
 
-##### <a id="312"></a>Installing Keras
+### <a id="312"></a>Installing Keras
 
 
-###### Install useful dependencies
+#### Install useful dependencies
 
 First, we will install useful dependencies:
 
@@ -106,6 +119,7 @@ Optionally, it could be useful to install:
  
  * **pillow**, a library useful for image processing
  * **h5py**, a library useful for data serialization used by Keras for model saving
+ * **ann_visualizer**, a library which visualize neural network defined using Keras Sequential API
 
 Mentioned dependencies can be installed with single command:
 
@@ -113,7 +127,7 @@ Mentioned dependencies can be installed with single command:
 pip install numpy scipy scikit-learn pandas pillow h5py
 ```
 
-###### Install Theano
+#### Install Theano
 
 Theano can be installed with command:
 
@@ -121,7 +135,7 @@ Theano can be installed with command:
 pip install Theano
 ```
 
-###### Install Tensorflow
+#### Install Tensorflow
 
 Note: TensorFlow only supports 64-bit Python 3.5.x on Windows.
 Tensorflow can be installed with command:
@@ -133,7 +147,7 @@ pip install tensorflow
 Note: this command will install CPU version.
 You can find explanation how to install GPU version of the TensorFlow at ...
 
-###### Install Keras
+#### Install Keras
 
 Keras can be installed with command:
 
@@ -158,7 +172,7 @@ Also you can upgrade your installation of Keras with:
 pip install --upgrade keras
 ```
 
-##### <a id="313"></a>Configuring Keras
+### <a id="313"></a>Configuring Keras
 
 
 Keras is configured via json configuration file. 
@@ -187,7 +201,7 @@ Json file consist of the key/value pairs as follows:
  * **backend**, type: String, values: **tensorflow**, **theano**, or **cntk**. Default back-end.
  * **image_data_format**, type: String, values: **channels_last** or **channels_first**. Image data format.
 
-###### A quick note on **image_data_format**
+#### A quick note on **image_data_format**
 
 Using TensorFlow, images are represented as NumPy arrays with the shape (height, width, depth), 
 where the depth is the number of channels in the image.
@@ -201,7 +215,7 @@ Keras(or an error message related to the shape of a given tensor) you should:
  * Check your back-end
  * Ensure your image dimension ordering matches your back-end
 
-##### <a id="331"></a>Develop Your First Neural Network with Keras
+### <a id="331"></a>Develop Your First Neural Network with Keras
 
 Developing Neural Network with Keras is straightforward. 
 In principle you need to execute following steps:
@@ -245,7 +259,7 @@ RowNumber,CustomerId,Surname,CreditScore,Geography,Gender,Age,Tenure,Balance,Num
 6,15574012,Chu,645,Spain,Male,44,8,113755.78,2,1,0,149756.71,1
 ```
 
-###### Load data
+#### Load data
 
 For loading a data we will use Pandas DataFrame which gives us elegant interface for loading.
 Dataset is attached to git repo. 
@@ -254,7 +268,7 @@ Dataset is attached to git repo.
 dataset = pd.read_csv('Churn_Modelling.csv')
 ```
 
-###### Prepare data
+#### Prepare data
 
 As we already mentioned dataset has 14 columns, but columns **RowNumber** and **CustomerId** are not useful for our analysis, so we will exclude them.
 Column **Exited** is our target variable.
@@ -299,7 +313,7 @@ X = sc.fit_transform(X)
 
 Finally data are prepared, so we can start to model our Neural Network.
 
-###### Define Model
+#### Define Model
 
 Models in Keras are deﬁned as a sequence of layers. 
 
@@ -346,9 +360,9 @@ model.add(Dense(6, init = 'uniform', activation = 'relu'))
 model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))	
 ```
 
-###### Compile Model
+#### Compile Model
 
-Now that the model is deﬁned, we can compile it. 
+Now model is deﬁned, so we can compile it. 
 Compiling the model uses the eﬃcient numerical libraries under the covers (the so-called back-end) such as **Theano** or **TensorFlow**. 
 The back-end automatically chooses the best way to represent the network for training and making predictions to run on your hardware. 
 
