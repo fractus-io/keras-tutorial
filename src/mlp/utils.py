@@ -7,6 +7,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.preprocessing import StandardScaler
+from ann_visualizer.visualize import ann_viz;
 
 def getModel():
 
@@ -71,3 +72,10 @@ def prepareData(dataset):
     X = sc.fit_transform(X)
     
     return X, Y
+
+def visualizeModel(model, title):
+
+    ann_viz(model, title = title)
+
+    return
+
