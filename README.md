@@ -304,6 +304,7 @@ Finally data are prepared, so we can start to model our Neural Network.
 Models in Keras are deﬁned as a sequence of layers. 
 
 For our case we will build simple fully-connected Neural Network, with 3 layers, input layer, one hidden layer and output layer.
+Such a network is called Multy Layer Perceptron network.
 
 First we create a Sequential model and add layers. 
 Fully connected layers are deﬁned using the Dense class, where we need to define following parameters:
@@ -317,6 +318,24 @@ This can be speciﬁed when creating the ﬁrst layer with the **input_dim**. Re
 Second layer model automatically knows the number of input variables from the first hidden layer.
 
 For first two layers we will use **relu** activation functions, and since we want binary result from output layer, the in last layer we will use **sigmoid** activation function.
+
+Visual represenation of the model
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-customer-churn-prediction.jpg "Multy Layer Percpeptron - Customer Churn Prediction")
+
+Model Summary
+
+Layer (type)                 Output Shape              Param #
+=================================================================
+dense_1 (Dense)              (None, 6)                 72
+_________________________________________________________________
+dense_2 (Dense)              (None, 6)                 42
+_________________________________________________________________
+dense_3 (Dense)              (None, 1)                 7
+=================================================================
+Total params: 121
+Trainable params: 121
+Non-trainable params: 0
 
 ```
 # Adding the input layer and the first hidden layer

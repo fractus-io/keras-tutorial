@@ -29,10 +29,10 @@ def main():
     model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     
     # fit the model
-    model.fit(X, Y, batch_size = 10, epochs = 10)
+    model.fit(X, Y, batch_size = 10, epochs = 1)
     
-    utils.visualizeModel(model, "Multy Layer Percpeptron - Customer Chur Prediction")
-
+    model.summary()
+    
     # evaluate the model
     scores = model.evaluate(X, Y)
     print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
