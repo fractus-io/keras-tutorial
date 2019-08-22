@@ -21,7 +21,7 @@
   * [Installing Keras](#312)
   * [Configuring Keras](#313)
 * [Develop Your First Neural Network with Keras, XOR gate](#321)
-* [Multi-Layer Perceptrons](#331)
+* [Multi Layer Perceptrons](#331)
 
 #### Deep Learning Models
 * Shallow and Deep Neural Networks
@@ -218,11 +218,11 @@ Keras(or an error message related to the shape of a given tensor) you should:
 
 ### <a id="321"></a>Develop Your First Neural Network with Keras, XOR gate
 
-In Neural Network [module](https://render.githubusercontent.com/view/ipynb?commit=336ec43a511fd144a1e373f1f3a53feeb9d915ae&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f667261637475732d696f2f6e657572616c2d6e6574776f726b732d7475746f7269616c2f333336656334336135313166643134346131653337336631663361353366656562396439313561652f4e657572616c4e6574776f726b734261736963732e6970796e62&nwo=fractus-io%2Fneural-networks-tutorial&path=NeuralNetworksBasics.ipynb&repository_id=175053175&repository_type=Repository#MultiLayerPerceptronBackpropagationAlgorithm) we showed that problem with XOR gate can't be solved using single layert perceptron. The XOR gate, can be solved with multy layer perceptrons. In that example complex backpropagation algorithm with limited functionality has been implemented directly in source code. 
+In Neural Network [module](https://render.githubusercontent.com/view/ipynb?commit=336ec43a511fd144a1e373f1f3a53feeb9d915ae&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f667261637475732d696f2f6e657572616c2d6e6574776f726b732d7475746f7269616c2f333336656334336135313166643134346131653337336631663361353366656562396439313561652f4e657572616c4e6574776f726b734261736963732e6970796e62&nwo=fractus-io%2Fneural-networks-tutorial&path=NeuralNetworksBasics.ipynb&repository_id=175053175&repository_type=Repository#MultiLayerPerceptronBackpropagationAlgorithm) we showed that problem with XOR gate can't be solved using single layer perceptron. The XOR gate, can be solved with multy layer perceptrons. In that example complex backpropagation algorithm with limited functionality has been implemented directly in source code. 
 
-Keras implements ***complex parts*** of neural networks, like backprop algorithm, various activation functions, weights initilaization strategies, loss function etc.,  so in our first example we will show we can solve XOR gate problem using Keras. 
+Keras implements ***complex parts*** of neural networks, like backprop algorithm, various activation functions, weights initilaization strategies, loss function etc.,  so in our first example we will show how we can solve XOR gate problem using Keras. 
 
-So, we need to:
+We need to:
 
 prepare dataset:
 
@@ -259,8 +259,12 @@ evalute model:
 ```
 scores = model.evaluate(X, Y)
 ```
+Neural network looks like:
 
-Already after 300 epochs, accuracy of the model is 100%, so we can see that XOR gate problem, can be solved with Keras less then 20 line sof code.
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-xorjpg "Multy Layer Percpeptron - XOR gate")
+
+Already after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 line sof code.
+
 
 You can run whole process with command:
 
@@ -270,11 +274,14 @@ python xor.py
 ```
 
 
-model.fit(X, Y, batch_size = 1, epochs = 500)
+### <a id="331"></a>Multi Layer Perceptrons
 
-### <a id="331"></a>Multi-Layer Perceptrons
+Now we will show more realistic example which can be solved using Multi Layer Perceptrons
 
+Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
+This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
 
+As you can see from XOR example we have tipical steps which needs to be executed:
 In principle you need to execute following steps:
 
 1. Load data
@@ -283,9 +290,6 @@ In principle you need to execute following steps:
 4. Compile Model
 5. Fit Model
 6. Evaluate Model
-
-Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
-This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
 
 We will use dataset from bank which contains historical behavior of the customer. Dataset has 10000 rows with 14 columns. 
 The input variables describes bank customer with following attributes:
