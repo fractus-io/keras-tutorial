@@ -261,7 +261,7 @@ scores = model.evaluate(X, Y)
 ```
 Neural network looks like:
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-xorjpg "Multy Layer Percpeptron - XOR gate")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-xor.jpg "Multy Layer Perceptron - XOR gate")
 
 Already after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 line sof code.
 
