@@ -97,3 +97,15 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml 
 *.ipr 
+
+# exclude everything from folder src/mnist/models
+src/mnist/models/*
+
+# exception to the rule src/mnist/models
+!src/mnist/models/.gitkeep 
+
+# exclude everything from folder src/mnist/graphs
+src/mnist/graphs/*
+
+# exception to the rule src/mnist/graphs
+!src/mnist/graphs/.gitkeep 

@@ -44,7 +44,7 @@ def main():
     HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss is_data_augmented')
     
     hyper_params = HyperParams(optimizer = 'adam', #rmsprop 
-                               epochs = 2, 
+                               epochs = 1, 
                                batch_size = 256, 
                                loss = 'categorical_crossentropy',
                                is_data_augmented = False)
@@ -73,7 +73,7 @@ def main():
     
         # checkpoint callbacks
         model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
-                                    './models/' + utils.getStartTime() + '_' + modelName + '.hdf5',
+                                    './models/' + utils.getStartTime() + '_' + modelName + '.h5',
                                     monitor = 'val_acc',
                                     #save_best_only = True,
                                     verbose = 1,
