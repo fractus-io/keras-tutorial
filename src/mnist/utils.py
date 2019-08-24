@@ -11,7 +11,7 @@ from keras.utils.vis_utils import plot_model
 from keras import backend as k
 from sklearn import datasets
 import datetime
-#from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Tag
 
 
 _start_time = None
@@ -66,7 +66,7 @@ def drawGraphByType(history, modelName, epochs, type):
     
     startTime = getStartTime()
     
-    folder = './graphs/'
+    folder = './outputs/'
     figureName = modelName + '_' + type + '_' + 'e' + str(epochs) + '_' + startTime + '.png'
     
     valType = 'val_' + type
@@ -88,7 +88,8 @@ def drawAccLossGraph(history, modelName, epochs):
             
     startTime = getStartTime()#datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
     
-    folder = './graphs/'
+    folder = './outputs/'
+
     figureName = modelName + '_' +  'e_' + str(epochs) + '_' + startTime + '.png'
         
     plt.figure()
@@ -113,7 +114,7 @@ def drawTimes(times, modelName, epochs):
             
     startTime = getStartTime()#datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
     
-    folder = './graphs/'
+    folder = './outputs/'
     figureName = modelName + '_times_' +  'e_' + str(epochs) + '_' + startTime + '.png'
         
     plt.figure()
@@ -133,27 +134,70 @@ def drawTimes(times, modelName, epochs):
 def generateReport(reportList):
 
     startTime =  getStartTime()
+    reportName = './outputs/' + startTime + '.html'
 
+    # create bs
+    soup = BeautifulSoup('', 'html.parser')
+    
+    htmlTag = soup.new_tag('html')
+    headerTag = soup.new_tag('H1')
+    
+    headerTag.string = 'Training report at: ' + startTime
+
+    htmlTag.append(headerTag)
         
     for (model, modelName, history, classificationReport, hyper_params, times) in reportList:
     
         epochs = hyper_params.epochs
-                            
-        #model_plot_name = './graphs/model_plot_' + startTime + '.png'
+                    
+        reportHeaderTag = soup.new_tag('H2')
+        reportHeaderTag.string = 'Model name: ' + modelName
+              
+        modelSummaryTag = soup.new_tag('P')
+        
+        stringlist = []
+        model.summary(print_fn=lambda x: stringlist.append(x))
+    
+        for item in stringlist:
+            itemTag = soup.new_tag('P')
+            itemTag.string = item
+            modelSummaryTag.append(itemTag)
+         
+        model_plot_name = './outputs/model_plot_' + startTime + '.png'
         #plot_model(model, to_file = './reports/' + model_plot_name, show_shapes=True, show_layer_names=True)
 
-         
-        model_plot_name = './graphs/model_plot_' + startTime + '.png'
+        pTag = soup.new_tag('p')
+        imageTag = soup.new_tag('img')
+        imageTag['src'] = model_plot_name
+        pTag.append(imageTag)
+        modelSummaryTag.append(pTag)
+            
         drawGraphByType(history, modelName, epochs, 'acc')
         drawGraphByType(history, modelName, epochs, 'loss')
         drawAccLossGraph(history, modelName, epochs)
         drawTimes(times, modelName, epochs)
-     
-        #stringlist = classificationReport.split('\n')    
-        #classificationReportTag = soup.new_tag('P')
-        #for item in stringlist:
-        #    itemTag = soup.new_tag('P')
-        #    print(item.split('\t'))
-        #    itemTag.string = item
-        #    classificationReportTag.append(itemTag)
+        
+        stringlist = classificationReport.split('\n')    
+        classificationReportTag = soup.new_tag('table')
+        for row in stringlist:
+            trTag = soup.new_tag('tr')
+            tdTag = soup.new_tag('td')
+            tdTag.string = row
+            trTag.append(tdTag)
+            classificationReportTag.append(trTag)
+        
+
+        htmlTag.append(reportHeaderTag)
+        htmlTag.append(modelSummaryTag)
+        htmlTag.append(classificationReportTag)
+
+    soup.append(htmlTag)
+        
+    # save bs as html file
+    htmlFile = soup.prettify("utf-8")
+    with open(reportName, "wb") as file:
+        file.write(htmlFile)
+    
+
+    
         

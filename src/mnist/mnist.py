@@ -26,6 +26,7 @@ def main():
 
     
     # list of the implemented models, second parameter defined is model convolutional or not
+    
     '''
     modelNames = (('mlp_one_layer', 'False'), 
                   ('mlp_two_layers', 'False'), 
@@ -34,11 +35,10 @@ def main():
                   ('conv_net_dropout', 'True'), 
                   ('conv_net_batch_norm', 'True'),
                   ('conv_net_l1', 'True'),
-                  ('conv_net_l2', 'True'), 
-                  ('leNet', 'True'))
+                  ('conv_net_l2', 'True'))
     '''
-    modelNames = (('mlp_one_layer', 'False'),
-                  )
+
+    modelNames = (('mlp_one_layer', 'False'),)
     
     # named tuple which is holding hyper parameters values
     HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss is_data_augmented')
@@ -60,7 +60,12 @@ def main():
     for (modelName, isConvModel)  in modelNames:
 
        # prepare data
-        (train_data, train_labels_one_hot), (test_data, test_labels_one_hot) = utils.prepareData(train_images, train_labels, test_images, test_labels, isConvModel, hyper_params.is_data_augmented)
+        (train_data, train_labels_one_hot), (test_data, test_labels_one_hot) = utils.prepareData(train_images, 
+                                                                                                 train_labels, 
+                                                                                                 test_images, 
+                                                                                                 test_labels, 
+                                                                                                 isConvModel, 
+                                                                                                 hyper_params.is_data_augmented)
          
         # now data is processed and we are ready to build a network
         model = Model.getModel(modelName)
@@ -73,7 +78,7 @@ def main():
     
         # checkpoint callbacks
         model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
-                                    './models/' + utils.getStartTime() + '_' + modelName + '.h5',
+                                    './outputs/' + utils.getStartTime() + '_' + modelName + '.h5',
                                     monitor = 'val_acc',
                                     #save_best_only = True,
                                     verbose = 1,

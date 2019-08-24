@@ -20,8 +20,8 @@
   * [Keras, TensorFlow, Theano, and CNTK](#311)
   * [Installing Keras](#312)
   * [Configuring Keras](#313)
-* [Develop Your First Neural Network with Keras, XOR gate](#321)
-* [Multi Layer Perceptrons](#331)
+* Multi-Layer Perceptrons
+* [Develop Your First Neural Network with Keras](#331)
 
 #### Deep Learning Models
 * Shallow and Deep Neural Networks
@@ -124,7 +124,7 @@ Optionally, it could be useful to install:
 Mentioned dependencies can be installed with single command:
 
 ```
-pip install numpy scipy scikit-learn pandas pillow h5py
+pip install numpy scipy scikit-learn pandas pillow h5py ann_viz
 ```
 
 #### Install Theano
@@ -215,73 +215,9 @@ Keras(or an error message related to the shape of a given tensor) you should:
  * Check your back-end
  * Ensure your image dimension ordering matches your back-end
 
+### <a id="331"></a>Develop Your First Neural Network with Keras
 
-### <a id="321"></a>Develop Your First Neural Network with Keras, XOR gate
-
-In Neural Network [module](https://render.githubusercontent.com/view/ipynb?commit=336ec43a511fd144a1e373f1f3a53feeb9d915ae&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f667261637475732d696f2f6e657572616c2d6e6574776f726b732d7475746f7269616c2f333336656334336135313166643134346131653337336631663361353366656562396439313561652f4e657572616c4e6574776f726b734261736963732e6970796e62&nwo=fractus-io%2Fneural-networks-tutorial&path=NeuralNetworksBasics.ipynb&repository_id=175053175&repository_type=Repository#MultiLayerPerceptronBackpropagationAlgorithm) we showed that problem with XOR gate can't be solved using single layer perceptron. The XOR gate, can be solved with multy layer perceptrons. In that example complex backpropagation algorithm with limited functionality has been implemented directly in source code. 
-
-Keras implements ***complex parts*** of neural networks, like backprop algorithm, various activation functions, weights initilaization strategies, loss function etc.,  so in our first example we will show how we can solve XOR gate problem using Keras. 
-
-We need to:
-
-prepare dataset:
-
-```
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-Y = np.array([[0], [1], [1], [0]])
-```
-
-define neural network using Keras Sequential API:
-
-```
-# Adding the input layer and the first hidden layer
-model.add(Dense(8, activation = 'relu', input_dim = 2))
-# Adding the second hidden layer
-model.add(Dense(4, activation = 'relu'))
-# Adding the output layer
-model.add(Dense(1, activation = 'sigmoid'))
-```
-
-compile the model:
-
-```
-model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-```
-
-train a model:
-
-```
-model.fit(X, Y, batch_size = 1, epochs = 500)
-```
-
-evalute model:
-
-```
-scores = model.evaluate(X, Y)
-```
-Neural network looks like:
-
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-xor.jpg "Multy Layer Perceptron - XOR gate")
-
-Already after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 line sof code.
-
-
-You can run whole process with command:
-
-```
-# from ./xor
-python xor.py
-```
-
-
-### <a id="331"></a>Multi Layer Perceptrons
-
-Now we will show more realistic example which can be solved using Multi Layer Perceptrons
-
-Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
-This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
-
-As you can see from XOR example we have tipical steps which needs to be executed:
+Developing Neural Network with Keras is straightforward. 
 In principle you need to execute following steps:
 
 1. Load data
@@ -290,6 +226,9 @@ In principle you need to execute following steps:
 4. Compile Model
 5. Fit Model
 6. Evaluate Model
+
+Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
+This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
 
 We will use dataset from bank which contains historical behavior of the customer. Dataset has 10000 rows with 14 columns. 
 The input variables describes bank customer with following attributes:
@@ -439,54 +378,9 @@ Since output variable is binary, we will have to use logarithmic loss function c
 We want to improve performance of our Neural Network based on accuracy so we add metrics **parameter** as **accuracy**.
 
 ```
-# compile the model
 model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])	
 ```
 
 Congratulations, you have build your first Deep Learning Neural Network model.
 Our Neural Network is now ready to be trained.
-
-#### Fit Model
-
-Once our model has been defined and compiled, the model is ready for traning. We should give some data to the model and executethe training process. Training of the model is done by calling the ***fit()*** function on the model.
-
-```
-# fit the model
-model.fit(X, Y, batch_size = 10, epochs = 100)
-```
-
-The training process will be executed for a fixed number of iterations through the dataset called
-***epochs***, so we must define epochs argument in ***fit()*** function. 
-
-***fit()*** function has much more arguments, but for this example we will define minimum, so in addition to epochs argument, we will define batch_size argument which io  number of instances that are evaluated before a weight update in the network is performed 
-    
-#### Evaluate Model
-
-Our model has been trained on the entire dataset, so we can evaluate the performance
-of the network on the same dataset. This will only give us an idea of how well we have modeled
-the dataset (e.g. train accuracy), but no idea of how well the algorithm might perform on new
-data. 
-
-The model can be evalueted usning ***evaluation()*** function on your model and pass it the same input and output used to train the model. This will generate a prediction for each input and output pair and collect scores, including the average loss and any
-metrics you have configured, such as accuracy.
-
-```
-# evaluate the model
-scores = model.evaluate(X, Y)
-
-# print accuracy
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
-```
-
-Since this is very first example same data has been used for , so in future we will separate data into train and
-test datasets for the training and evaluation of your model.
-
-The whole process can be executed with command:
-
-```
-# from ./mlp
-python mlp.py
-```
-By running above command, you should see a message for each of the 100 epochs, printing the loss
-and accuracy for each, followed by the final evaluation of the trained model on the training dataset.
 

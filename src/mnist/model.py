@@ -95,20 +95,7 @@ class Model:
             model.add(Dense(64, activation='relu', kernel_regularizer = regularizers.l2(0.0001)))
             model.add(Dense(10, activation='softmax'))                
             return model
-
-        elif model_name == 'leNet':
-            model.add(Conv2D(20, (5, 5), padding='same', activation='relu', input_shape=(28, 28, 1 )))
-            model.add(MaxPooling2D(pool_size = (2, 2), strides=(2, 2))) 
-                   
-            model.add(Conv2D(50, (5, 5), padding = 'same', activation = 'relu'))
-            model.add(MaxPooling2D(pool_size = (2, 2), strides=(2, 2)))        
-            
-            model.add(Flatten())
-            model.add(Dense(500, activation='relu'))        
-            
-            model.add(Dense(unique_test_labels_len, activation='softmax'))
-            return model
-        
+                
         return model    
 
     @staticmethod
