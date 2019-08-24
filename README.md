@@ -487,5 +487,6 @@ The whole process can be executed with command:
 # from ./mlp
 python mlp.py
 ```
-
+By running above command, you should see a message for each of the 100 epochs, printing the loss
+and accuracy for each, followed by the final evaluation of the trained model on the training dataset.
 
