@@ -439,9 +439,53 @@ Since output variable is binary, we will have to use logarithmic loss function c
 We want to improve performance of our Neural Network based on accuracy so we add metrics **parameter** as **accuracy**.
 
 ```
+# compile the model
 model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])	
 ```
 
 Congratulations, you have build your first Deep Learning Neural Network model.
 Our Neural Network is now ready to be trained.
+
+#### Fit Model
+
+Once our model has been defined and compiled, the model is ready for traning. We should give some data to the model and executethe training process. Training of the model is done by calling the ***fit()*** function on the model.
+
+```
+# fit the model
+model.fit(X, Y, batch_size = 10, epochs = 100)
+```
+
+The training process will be executed for a fixed number of iterations through the dataset called
+***epochs***, so we must define epochs argument in ***fit()*** function. 
+
+***fit()*** function has much more arguments, but for this example we will define minimum, so in addition to epochs argument, we will define batch_size argument which io  number of instances that are evaluated before a weight update in the network is performed 
+    
+#### Evaluate Model
+
+Our model has been trained on the entire dataset, so we can evaluate the performance
+of the network on the same dataset. This will only give us an idea of how well we have modeled
+the dataset (e.g. train accuracy), but no idea of how well the algorithm might perform on new
+data. 
+
+The model can be evalueted usning ***evaluation()*** function on your model and pass it the same input and output used to train the model. This will generate a prediction for each input and output pair and collect scores, including the average loss and any
+metrics you have configured, such as accuracy.
+
+```
+# evaluate the model
+scores = model.evaluate(X, Y)
+
+# print accuracy
+print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+```
+
+Since this is very first example same data has been used for , so in future we will separate data into train and
+test datasets for the training and evaluation of your model.
+
+The whole process can be executed with command:
+
+```
+# from ./mlp
+python mlp.py
+```
+
 
