@@ -45,14 +45,14 @@ def main():
                   ('conv_net_l2', 'True'))
     '''
 
-    modelNames = (('mlp_one_layer', 'False'),)
+    modelNames = (('conv_net', 'True'),)
     
 
     # named tuple, holds hyper parameters 
     HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss ')
     
     hyper_params = HyperParams(optimizer = 'adam', #rmsprop 
-                               epochs = 1, 
+                               epochs = 60, 
                                batch_size = 256, 
                                loss = 'categorical_crossentropy')
     
