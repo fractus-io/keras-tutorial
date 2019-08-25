@@ -22,6 +22,8 @@
   * [Configuring Keras](#313)
 * [Develop Your First Neural Network with Keras, XOR gate](#321)
 * [Multi Layer Perceptrons](#331)
+* [Summary](#341)
+
 
 #### Deep Learning Models
 * Shallow and Deep Neural Networks
@@ -278,11 +280,10 @@ python xor.py
 
 Now we will show more realistic example which can be solved using Multi Layer Perceptrons
 
-Goal of our Neural Network is to predict customer churn for a certain bank i.e. which customer is going to leave the bank service. 
-This is a binary classiﬁcation problem (leave a bank as 1 or stay as 0). 
+Our goal is to predict which customer is going to leave the bank, this problem is usually called ***customer churn prediction***. 
+This is a ***binary classiﬁcation problem***, while our network should predict is customer going to leave a bank as 1 or stay as 0. 
 
-As you can see from XOR example we have tipical steps which needs to be executed:
-In principle you need to execute following steps:
+As you can see from XOR example, typical steps which needs to be executed are:
 
 1. Load data
 2. Prepare data
@@ -291,8 +292,9 @@ In principle you need to execute following steps:
 5. Fit Model
 6. Evaluate Model
 
-We will use dataset from bank which contains historical behavior of the customer. Dataset has 10000 rows with 14 columns. 
-The input variables describes bank customer with following attributes:
+We will use dataset from bank which contains historical behavior of the customer. Dataset(./src/mlp/Churn_Modelling.csv) has 10000 rows with 14 columns. 
+
+The input variables describes bank customers with following attributes:
  * RowNumber    
  * CustomerId    
  * Surname    
@@ -490,3 +492,47 @@ python mlp.py
 
 By running above command, you should see a message for each of the 100 epochs, printing the loss
 and accuracy for each, followed by the final evaluation of the trained model on the training dataset.
+
+After 100 epochs we reached accuracy of the approx 86%.
+```
+Epoch 98/100
+10000/10000 [==============================] - 5s 454us/step - loss: 0.3351 - acc: 0.8628
+Epoch 99/100
+10000/10000 [==============================] - 3s 345us/step - loss: 0.3345 - acc: 0.8614
+Epoch 100/100
+10000/10000 [==============================] - 3s 324us/step - loss: 0.3341 - acc: 0.8634
+```
+
+Note: feel free to experiment, try change neural network architecture, change other parameters and see can you improve accuracy or the model.
+
+
+
+### <a id="341"></a>Summary
+
+As you can see, during a process of finding appropriate neural network for specific problem, we need to make a lot of 
+decision and to continuously loop over the steps: 
+
+Idea -> Code -> Experiment 
+
+So, we need to:
+ * choose variables from dataset(feature engineering)
+ * define architecture of the neural network
+ * define number of layers
+ * define number of neurons in each layer
+ * decide on activation function for each layer
+ * choose optimization algorithm
+ * choose loss function
+ * split dataset into training/test/validation sets
+ * define batch_size
+ * define number of epochs
+ * keep a track of the accuracy and loss during training phase
+ * evaluate the model
+ * save/load a model
+ 
+In a next chapter we will show you how Keras helps us in order to easily implement mentioned steps.
+
+
+ 
+
+
+ 
