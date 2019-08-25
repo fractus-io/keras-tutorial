@@ -26,7 +26,7 @@ def loadData():
     dataset = datasets.fetch_mldata("MNIST Original")
     
     
-def prepareData(train_images, train_labels, test_images, test_labels, is_conv_model, is_data_augmented):
+def prepareData(train_images, train_labels, test_images, test_labels, is_conv_model):
         
     trainInputs = train_images
     testInputs = test_images
@@ -112,7 +112,7 @@ def drawAccLossGraph(history, modelName, epochs):
 
 def drawTimes(times, modelName, epochs):
             
-    startTime = getStartTime()#datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+    startTime = getStartTime()
     
     folder = './outputs/'
     figureName = modelName + '_times_' +  'e_' + str(epochs) + '_' + startTime + '.png'
@@ -150,6 +150,11 @@ def generateReport(reportList):
     
         epochs = hyper_params.epochs
                     
+        drawGraphByType(history, modelName, epochs, 'acc')
+        drawGraphByType(history, modelName, epochs, 'loss')
+        drawAccLossGraph(history, modelName, epochs)
+        drawTimes(times, modelName, epochs)
+
         reportHeaderTag = soup.new_tag('H2')
         reportHeaderTag.string = 'Model name: ' + modelName
               
@@ -172,11 +177,8 @@ def generateReport(reportList):
         pTag.append(imageTag)
         modelSummaryTag.append(pTag)
             
-        drawGraphByType(history, modelName, epochs, 'acc')
-        drawGraphByType(history, modelName, epochs, 'loss')
-        drawAccLossGraph(history, modelName, epochs)
-        drawTimes(times, modelName, epochs)
-        
+
+        # print thet classification report
         stringlist = classificationReport.split('\n')    
         classificationReportTag = soup.new_tag('table')
         for row in stringlist:
@@ -186,7 +188,6 @@ def generateReport(reportList):
             trTag.append(tdTag)
             classificationReportTag.append(trTag)
         
-
         htmlTag.append(reportHeaderTag)
         htmlTag.append(modelSummaryTag)
         htmlTag.append(classificationReportTag)

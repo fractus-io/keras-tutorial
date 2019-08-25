@@ -20,11 +20,18 @@ from keras import backend as k
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelBinarizer
 from keras.preprocessing.image import ImageDataGenerator
-
+import argparse
 
 def main():
 
     
+    # construct the argument parse and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-m", "--model", required=True, help="you must specify name of the model")
+    
+    args = vars(ap.parse_args())
+    print(args["model"])
+
     # list of the implemented models, second parameter defined is model convolutional or not
     
     '''
@@ -40,14 +47,14 @@ def main():
 
     modelNames = (('mlp_one_layer', 'False'),)
     
-    # named tuple which is holding hyper parameters values
-    HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss is_data_augmented')
+
+    # named tuple, holds hyper parameters 
+    HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss ')
     
     hyper_params = HyperParams(optimizer = 'adam', #rmsprop 
                                epochs = 1, 
                                batch_size = 256, 
-                               loss = 'categorical_crossentropy',
-                               is_data_augmented = False)
+                               loss = 'categorical_crossentropy')
     
     
     reportList = []
@@ -64,8 +71,7 @@ def main():
                                                                                                  train_labels, 
                                                                                                  test_images, 
                                                                                                  test_labels, 
-                                                                                                 isConvModel, 
-                                                                                                 hyper_params.is_data_augmented)
+                                                                                                 isConvModel)
          
         # now data is processed and we are ready to build a network
         model = Model.getModel(modelName)
