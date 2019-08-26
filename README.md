@@ -26,6 +26,7 @@
 
 
 #### Deep Learning Models
+* [Keras Models](#41)
 * Shallow and Deep Neural Networks
 * Model Architectures
 * Train the Model
@@ -530,6 +531,26 @@ So, we need to:
  * save/load a model
  
 In a next chapter we will show you how Keras helps us in order to easily implement mentioned steps.
+
+## >Deep Learning Models
+
+### <a id="41"></a>Keras Models
+
+Idea behined Keras is to be user friendly, modular, easy to extend. The API is ***designed for human beings, not machines,*** and ***follows best practices for reducing cognitive load***.
+
+
+Neural layers, cost functions, optimizers, initialization schemes, activation functions, and regularization schemes are all standalone modules that you can combine to create a models. New modules are simple to add, as new classes and functions. 
+
+Keras Model API is used define neural network architecture by defining input layer, hidden layers, output layers, number of neurons in each layer, activation function for each layer etc.
+
+The Model is the core Keras data structure. There are two main types of models available in Keras:
+* the Sequential API
+* the Functional API
+
+The easiest way of creating a model in Keras is by using the sequential API, which lets you stack one layer after the other. 
+The problem with the sequential API is that it doesn’t allow models to have multiple inputs or outputs, which are needed for some problems.
+Nevertheless, the sequential API is a perfect choice for most problems.
+
 
 
  
