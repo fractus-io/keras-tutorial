@@ -592,8 +592,15 @@ model.add(layers.Dense(16))
 The second layer didn’t receive an input shape argumen, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
 
 
+#### Functional API
 
+Functional API offers a more flexible way for defining models.
 
+It allows you to define multiple input or output models as well as models that share layers.
+
+Since Functional API in this chapter we will be focused on Sequential API
+
+...
 
 Picking the right network architecture is more an art than a science; and although
 there are some best practices and principles you can rely on, only practice can help
