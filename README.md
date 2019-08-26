@@ -547,13 +547,60 @@ The Model is the core Keras data structure. There are two main types of models a
 * the Sequential API
 * the Functional API
 
+#### Sequential API
+
 The easiest way of creating a model in Keras is by using the sequential API, which lets you stack one layer after the other. 
 The problem with the sequential API is that it doesn’t allow models to have multiple inputs or outputs, which are needed for some problems.
 Nevertheless, the sequential API is a perfect choice for most problems.
 
+The fundamental data structure in neural networks is the layer. 
+***A layer is a data-processing module that takes as input one or more tensors and that outputs one or more tensors.***
+
+Different type of the layers are appropriate for different tensor formats and different types of data processing. 
+
+Vector data, stored in 2D tensors of shape (samples, features), is ussualy processed by densely connected layers, also called fully connected or dense layers (the Dense class in Keras). 
+
+Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D).
+
+Sequence data, stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer.
+
+Layers are in fact as the LEGO bricks where when are combined together forms a deep learning neural network.
+
+Building deep-learning models in Keras is done by stacking together compatible layers to form data-transformation pipelines.
+Every layer will only accept input tensors of a certain shape and will return output tensors of a certain shape. 
+Consider the following example:
+
+```
+from keras import layers
+layer = layers.Dense(16, input_shape=(784,))
+```
+
+Layer has been created and it will only accept as input 2D tensors where the first dimension is 784. This layer will return a tensor where the first dimension has been transformed to be 16.
+
+Thus this layer can only be connected to a downstream layer that expects 16- dimensional vectors as its input. 
+
+When using Keras, you don’t have to worry about compatibility, because the layers you add to your models are dynamically built to
+match the shape of the incoming layer. For instance, suppose you write the following:
+
+```
+from keras import models
+from keras import layers
+model = models.Sequential()
+model.add(layers.Dense(16, input_shape=(784,)))
+model.add(layers.Dense(16))
+```
+The second layer didn’t receive an input shape argumen, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
 
 
- 
+
+
+
+Picking the right network architecture is more an art than a science; and although
+there are some best practices and principles you can rely on, only practice can help
+you become a proper neural-network architect. 
+
+
+
 
 
  
