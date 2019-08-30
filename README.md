@@ -547,6 +547,10 @@ The Model is the core Keras data structure. There are two main types of models a
 * the Sequential API
 * the Functional API
 
+Functional API offers advanced way for defining models.
+It allows you to define multiple input or output models as well as models that share layers.
+Focus in this chapter will on on Sequential API.
+
 #### Sequential API
 
 The easiest way of creating a model in Keras is by using the sequential API, which lets you stack one layer after the other. 
@@ -575,7 +579,7 @@ from keras import layers
 layer = layers.Dense(16, input_shape=(784,))
 ```
 
-Layer has been created and it will only accept as input 2D tensors where the first dimension is 784. This layer will return a tensor where the first dimension has been transformed to be 16.
+Layer has been created and it will accept as input 2D tensors where the first dimension is 784. This layer will return a tensor where the first dimension has been transformed to be 16.
 
 Thus this layer can only be connected to a downstream layer that expects 16- dimensional vectors as its input. 
 
@@ -591,14 +595,239 @@ model.add(layers.Dense(16))
 ```
 The second layer didn’t receive an input shape argumen, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
 
+#### Layers
 
-#### Functional API
+Keras Sequential API implements a lot of layers which can be used for different types of neural network(MlP, CNN, LSTM, etc.). Commonly used layers are:
+ * Core Layers
+    * Dense
+    * Dropuout
+    * Activation
+    * ...
 
-Functional API offers a more flexible way for defining models.
+ * Convolutional Layers
+    * Conv1D
+    * Conv2d
+    * ...
 
-It allows you to define multiple input or output models as well as models that share layers.
+ * Pooling Layers
+    * MaxPooling1D
+    * MaxPooling2D
+    * ...
 
-Since Functional API in this chapter we will be focused on Sequential API
+ * Recurrent Layers
+    * RNN
+    * LSTM
+    * ...
+
+Complete list of the implemented layers is described in [Keras documentation](https://keras.io/layers/about-keras-layers/).
+
+#### Activation functions
+
+Keras impements neurons activation functions as well. Activations can either be used through an Activation layer, or through the activation argument supported by all forward layers.
+
+from keras.layers import Activation, Dense
+
+```
+model.add(Dense(64))
+model.add(Activation('tanh'))
+```
+
+or 
+
+```
+model.add(Dense(64, activation='tanh'))
+```
+
+Available [activations functions](https://keras.io/activations/) are:
+ * softmax 
+ * elu
+ * selu
+ * softplus
+ * softsign
+ * relu
+ * tanh
+ * sigmoid
+ * hard_sigmoid
+ * exponential
+ * linear
+
+ Activation function decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it. The purpose of the activation function is to introduce non-linearity into the output of a neuron.
+
+#### How to Choose Activation Function 
+
+Both sigmoid and tanh functions are not suitable for hidden layers because if z is very large or very small, the slope of the function becomes very small which slows down the gradient descent which can be visualized in the below video. 
+
+Rectified linear unit (relu) is a preferred choice for all hidden layers because its derivative is 1 as long as z is positive and 0 when z is negative. 
+
+For binary classification, the sigmoid function is a good choice for output layer because the actual output value ‘Y’ is either 0 or 1 so it makes sense for predicted output value to be a number between 0 and 1.
+
+For a multyclass classification softmax activation function is commonly used.
+
+For non-classification problems such as prediction of housing prices, we shall use linear activation function at the output layer only.
+
+#### Initializers
+
+Initializations define the way to set the initial random weights of Keras layers.
+
+The keyword arguments used for passing initializers to layers will depend on the layer. Usually it is simply kernel_initializer and bias_initializer:
+
+```
+model.add(Dense(64,
+                kernel_initializer='random_uniform',
+                bias_initializer='zeros'))
+```
+
+The following built-in [initializers](https://keras.io/initializers/) are available as part of the keras.initializers module:
+
+ * Zeros
+ * Ones 
+ * Constant
+ * RandomNormal
+ * RandomUniform
+ * TruncatedNormal
+ * VarianceScaling
+ * Orthogonal
+ * Identity
+ * lecun_uniform
+ * glorot_normal
+ * glorot_uniform
+ * he_normal
+ * lecun_normal
+ * he_uniform
+
+#### Compilations
+
+Once model is defined, and before we start with training, we need to the configure learning process. Again Keras implements "hard part" for us, so method ***compile*** is used for configuration of the learning process. Method receives 3 arguments:
+
+ * optimizer
+ * loss function
+ * list of the metrics
+
+ Let's see few examples:
+
+```
+ # For a multi-class classification problem
+model.compile(optimizer='rmsprop',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# For a binary classification problem
+model.compile(optimizer='rmsprop',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+
+# For a mean squared error regression problem
+model.compile(optimizer='rmsprop',
+              loss='mse')
+
+```
+
+#### Optimizers
+
+During the training process, we tweak model parameters(weights) and trying to minimize that loss function, in order to make predictions as accurate as it is possible. 
+
+The optimizers are responisible(together with loss function) to update model parameters.
+
+You can think of a hiker trying to get down a mountain with a blindfold on. It’s impossible to know which direction to go in, but there’s one thing she can know: if she’s going down (making progress) or going up (losing progress). Eventually, if she keeps taking steps that lead her downwards, she’ll reach the base.
+
+Similarly, it’s impossible to know what your model’s weights should be right from the start. But with some trial and error based on the loss function (whether the hiker is descending), you can end up getting there eventually.
+
+[ToDo](https://blog.algorithmia.com/wp-content/uploads/2018/05/word-image.png)
+
+Again Keras implements optimizers, like from most Stochastic Gradient Descent, RMSProp, Adam, etc.
+When using and optimizer, we should define parameters like learning rate, momentum etc.
+
+You can find details about the optimizers at [link](https://keras.io/optimizers/).
+
+In choosing an optimizer it is important to consider is the network depth, the type of layers and the type of data.
+
+You are free to experiment, but as a hint consider SGD for shallow networks, and either Adam or RMSProp for deepnets.
+
+ 
+#### Loss functions
+
+Loss function is simple method used during training in order to see how well our neural networks models dataset. 
+
+If your predictions are totally off, your loss function will output a higher number. 
+If prediction is pretty good, loss function will output a lower number.  As you change pieces of your algorithm to try and improve your model, your loss function will tell you if you’re getting anywhere.
+
+Keras implements loss functions like mean_squared_error, mean_absolute_error, binary_crossentropy, categorical_crossentropy etc.
+Details are described [here](https://keras.io/losses/).
+
+Below is a table where you can find a hints how to choose loss and last layer activaton functions.
+
+| Problem                                  | Last layer activation  | Loss                     |  Example                    |
+| ---------------------------------------- |:----------------------:| ------------------------:|----------------------------:|
+| Binary classification                    | sigmoid                | binary_crossentropy      | dog vs cat                  |
+| Multi-class, single-label classification | sigmoid                | categorical_crossentropy | MNIST(10 labels) dog vs cat |
+| Multi-class, multi-label classification  | sigmoid                | binary_crossentropy      | News tags classification    |
+| Regression to arbitrary values           | none                   | mse                      | house price                 |
+| Regression to values between 0 and 1     | sigmoid                | mse                      | 0 is broken, 1 is new       |
+
+
+
+#### Training
+
+Model training is executed using ***fit*** function. 
+
+Once the model is compiled, it can be fit, meaning adapt the weights on a training dataset.
+
+Fitting the model requires the training data to be specified. The model is trained using the backpropagation algorithm and optimized according to the optimization algorithm and loss function specified when compiling the model.
+
+The backpropagation algorithm requires that the network be trained for a specified number of epochs or exposures to the training dataset.
+
+Each epoch can be partitioned into groups of input-output pattern pairs called batches. This define the number of patterns that the network is exposed to before the weights are updated within an epoch. It is also an efficiency optimization, ensuring that not too many input patterns are loaded into memory at a time.
+
+A minimal example of fitting a network is:
+
+```
+model.fit(X, Y, batch_size = 1, epochs = 500)
+```
+
+#### Evaluate
+
+Once the model is trained, it can be evaluated.
+
+The model can be evaluated on the training data, but this will not provide a useful indication of the performance of the network as a predictive model, as it has seen all of this data before.
+
+We can evaluate the performance of the network on a separate dataset, unseen during testing. This will provide an estimate of the performance of the network at making predictions for unseen data in the future.
+
+The model evaluates the loss across all of the test patterns, as well as any other metrics specified when the model was compiled, like classification accuracy. A list of evaluation metrics is returned.
+
+For example, for a model compiled with the accuracy metric, we could evaluate it on a new dataset as follows:
+
+```
+model.evaluate(X, Y)
+```
+
+#### Predict
+
+Finally, once we are satisfied with the performance of our fit model, we can use that model to make predictions on new data.
+
+For example:
+
+```
+model.predict(X)
+```
+
+The predictions will be returned in the format provided by the output layer of the network.
+
+In the case of a regression problem, these predictions may be in the format of the problem directly, provided by a linear activation function.
+
+For a binary classification problem, the predictions may be an array of probabilities for the first class that can be converted to a 1 or 0 by rounding.
+
+For a multiclass classification problem, the results may be in the form of an array of probabilities (assuming a one hot encoded output variable) that may need to be converted to a single class output prediction using the argmax function.
+
+#### Summary
+
+Keras provides all needed functionality, to cover whole process, from defining neural network, training, evaluating and prediciting. In addition to mentioned functionality, Keras offers more functionality which are helpfull as well, like storing/loading trained models, printing/visualizing model details, optimization techniques to avoid overffiting/underfitting like dropouts, l1 /& l2 regularization, batch norms, callbacks during training etc.
+
+In a next chapter we try to show whole process, for concrete dataset where we will start with simple model, and build more advanced model in order to achieve best possible accuarcy.
+
+
+------------------------------
+
+
 
 ...
 
