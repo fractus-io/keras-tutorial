@@ -20,39 +20,65 @@ from keras import backend as k
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelBinarizer
 from keras.preprocessing.image import ImageDataGenerator
-import argparse
+import argparse,textwrap
 
 def main():
 
-    
+    parser = argparse.ArgumentParser()
     # construct the argument parse and parse the arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-m", "--model", required=True, help="you must specify name of the model")
-    
-    args = vars(ap.parse_args())
-    print(args["model"])
+    parser = argparse.ArgumentParser(description='Please specify model.',
+                                     usage='use "python %(prog)s --help" for more information',
+                                     formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('-m', 
+                        '--model', 
+                        required=True,
+                        help= textwrap.dedent('''\
+                        Possible MODEL:
+                        mlp_one_layer
+                        mlp_two_layers
+                        mlp_two_layers_dropout
+                        conv_net
+                        conv_net_dropout
+                        conv_net_batch_norm
+                        conv_net_l1
+                        conv_net_l2
+                        all -> will train all models listed above
+                        '''))
+
+    args = vars(parser.parse_args())
+    model_name = args["model"]
 
     # list of the implemented models, second parameter defined is model convolutional or not
-    
-    '''
-    modelNames = (('mlp_one_layer', 'False'), 
-                  ('mlp_two_layers', 'False'), 
-                  ('mlp_two_layers_dropout', 'False'),
-                  ('conv_net', 'True'),
-                  ('conv_net_dropout', 'True'), 
-                  ('conv_net_batch_norm', 'True'),
-                  ('conv_net_l1', 'True'),
-                  ('conv_net_l2', 'True'))
+    existing_model_names = (('mlp_one_layer', 'False'), 
+                            ('mlp_two_layers', 'False'), 
+                            ('mlp_two_layers_dropout', 'False'),
+                            ('conv_net', 'True'),
+                            ('conv_net_dropout', 'True'), 
+                            ('conv_net_batch_norm', 'True'),
+                            ('conv_net_l1', 'True'),
+                            ('conv_net_l2', 'True'))
     '''
 
     modelNames = (('conv_net', 'True'),)
-    
+    '''
+
+    if (any(model_name in i for i in existing_model_names)) : 
+        # if model name is supported
+        tmp_dict = dict(existing_model_names)
+        modelNames = ((model_name, tmp_dict[model_name]),)
+    elif (model_name == 'all'):
+        modelNames = existing_model_names
+    else : 
+        # if model name is not supported
+        print("MODEL:" + model_name + ' is not supported, please speficy correct MODEL') 
+        exit()
 
     # named tuple, holds hyper parameters 
     HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss ')
     
     hyper_params = HyperParams(optimizer = 'adam', #rmsprop 
-                               epochs = 60, 
+                               epochs = 1, 
                                batch_size = 256, 
                                loss = 'categorical_crossentropy')
     
