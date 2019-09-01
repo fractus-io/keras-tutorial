@@ -860,7 +860,7 @@ trainInputs = trainInputs.reshape(60000, 784)
 testInputs = testInputs.reshape(10000, 784)
 ```
 
-We will scale value of the images from range 0:255 to range 0:1
+We will scale value of the images from range [0:255] to range [0:1]
 
 ```
 # covert data to float32
@@ -879,7 +879,7 @@ trainLabelsOneHot = to_categorical(train_labels)
 testLabelsOneHot = to_categorical(test_labels)
 ```
 
-After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron, with input layer,one hidden layerrons, relu as activation function and output layer(10 neurons, softmax as activation function):
+After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron, with input layer,one hidden layer(512 neurons, relu as activation function) and output layer(10 neurons-> due to 10 output labels, softmax as activation function):
 
 ```
 model = Sequential()
@@ -888,12 +888,87 @@ model.add(Dense(512, activation='relu', input_shape=(784,)))
 model.add(Dense(10, activation='softmax'))
 ```
 
+Adam optimizer will be used(feel free to play with another optimizer like rmsprop), due to 10 output label, loss function will be categorical_crossentropy.
+
+Compile function will look like:
+
+```
+model.compile(optimizer = 'adam', loss= 'categorical_crossentropy',  metrics=['accuracy'])
+```
+
+We will train our model with 60 epochs, batch_size will be 256.
+Keras fit function accepts [callbacks](https://keras.io/callbacks/), so for training we will define two callbacks:
+
+ * TimeCallback
+   counts time needed to execute one epoch
+
+ * ModelCheckpoint
+   save the model after every epoch
+
+Implementation of the TimeCallback:
+```
+import time
+import keras
+
+class TimeCallback(keras.callbacks.Callback):
+        
+    def on_train_begin(self, logs={}):        
+        self.times = []    
+	
+    def on_epoch_begin(self, epoch, logs={}):
+        self.epoch_start_time = time.time()
+            	
+    def on_epoch_end(self, epoch, logs={}):
+        self.times.append(time.time() - self.epoch_start_time)
+```
+
+We will define validation dataset which is in sact our test images and test labels.
+
+Fit function returns history object which is collection of the metrics collected after each epoch. In fact history object is callback which is automatically registered once fit() method is invoked.
+
+Fit function will look like:
+
+```
+# checkpoint callbacks
+model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
+                           './outputs/' + utils.getStartTime() + '_' + modelName + '.h5',
+                           monitor = 'val_acc',
+                           verbose = 1,
+                           period = hyper_params.epochs)
+
+# time callback
+time_callback = TimeCallback()
+
+history = model.fit(train_data, 
+                     train_labels_one_hot,
+                     batch_size = 256, 
+                     epochs = 60, 
+                     verbose = 1, 
+                     callbacks = [time_callback, model_checkpoint_callback],
+                     validation_data = (test_data, test_labels_one_hot))
+
+```
+
+Now you are ready to train model with command:
+
+```
+python mnist.py -m mlp_one_layer
+```
+
+After 60 epochs accuracy on training images is 100%, and accuracy on test images is 98.31%.
+```
+Epoch 60/60
+60000/60000 [==============================] - 3s 55us/step - loss: 1.0969e-04 - acc: 1.0000 - val_loss: 0.0777 - val_acc: 0.9831
+```
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
+
 
 
 #### Multilayer Perceptron
 
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
 
 
 

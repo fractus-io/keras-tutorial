@@ -78,7 +78,7 @@ def main():
     HyperParams = namedtuple('HyperParams', 'optimizer epochs batch_size loss ')
     
     hyper_params = HyperParams(optimizer = 'adam', #rmsprop 
-                               epochs = 1, 
+                               epochs = 60, 
                                batch_size = 256, 
                                loss = 'categorical_crossentropy')
     

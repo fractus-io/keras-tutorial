@@ -80,7 +80,7 @@ def drawGraphByType(history, modelName, epochs, type):
 
 def drawAccLossGraph(history, modelName, epochs):
             
-    startTime = getStartTime()#datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+    startTime = getStartTime()
     
     folder = './outputs/'
 
@@ -95,10 +95,8 @@ def drawAccLossGraph(history, modelName, epochs):
     plt.xlabel('Epoch')
     plt.ylabel('Loss/Accuracy')
     plt.legend()
-    #plt.legend(['Training ' + str(type) + ' : ' +  str(history.history[type][epochs-1]), 'Validation ' +str(type) + ' : ' +  str(history.history[valType][epochs-1])])
-    #plt.title(str(type) + " curves(" + str(modelName) + ")")
+    
     plt.title("Loss and Accuracy ({}".format(str(modelName)))
-    #plt.show()
     plt.savefig(folder + figureName, format="png")
     plt.close()
     
