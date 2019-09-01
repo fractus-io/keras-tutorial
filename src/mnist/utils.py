@@ -9,7 +9,6 @@ from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras.utils.vis_utils import plot_model
 from keras import backend as k
-from sklearn import datasets
 import datetime
 from bs4 import BeautifulSoup, Tag
 
@@ -20,11 +19,6 @@ def getStartTime():
     if _start_time is None:
         _start_time = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
     return _start_time
-
-def loadData():
-    
-    dataset = datasets.fetch_mldata("MNIST Original")
-    
     
 def prepareData(train_images, train_labels, test_images, test_labels, is_conv_model):
         
@@ -34,7 +28,7 @@ def prepareData(train_images, train_labels, test_images, test_labels, is_conv_mo
     if is_conv_model == 'True':
         
         # reshape inputs
-        # training set has shape (6000, 28, 28), convolutional networks expects shape 28 x 28 x 1
+        # training set has shape (60000, 28, 28), convolutional networks expects shape 28 x 28 x 1
         # new shape will be (60000, 28, 28, 1)
 
         trainInputs = trainInputs.reshape(60000, 28, 28, 1)
@@ -43,7 +37,7 @@ def prepareData(train_images, train_labels, test_images, test_labels, is_conv_mo
     elif is_conv_model == 'False':
 
         # reshape inputs
-        # training set has shape (6000, 28, 28), matrix 28x28 will be reshaped to 784 array
+        # training set has shape (60000, 28, 28), matrix 28x28 will be reshaped to 784 vector
         # new shape will be (60000, 784)
         trainInputs = trainInputs.reshape(60000, 784)
         testInputs = testInputs.reshape(10000, 784)
@@ -56,7 +50,7 @@ def prepareData(train_images, train_labels, test_images, test_labels, is_conv_mo
     trainInputs = trainInputs / 255
     testInputs = testInputs / 255
     
-    # Convert the labels from integer to categorical ( one-hot )    
+    # Convert the labels from integer to categorical ( one-hot ) vector
     trainLabelsOneHot = to_categorical(train_labels)
     testLabelsOneHot = to_categorical(test_labels)
     

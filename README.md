@@ -820,23 +820,92 @@ For a multiclass classification problem, the results may be in the form of an ar
 
 #### Summary
 
-Keras provides all needed functionality, to cover whole process, from defining neural network, training, evaluating and prediciting. In addition to mentioned functionality, Keras offers more functionality which are helpfull as well, like storing/loading trained models, printing/visualizing model details, optimization techniques to avoid overffiting/underfitting like dropouts, l1 /& l2 regularization, batch norms, callbacks during training etc.
+Keras provides all needed functionality, to cover whole process, from defining neural network, training, evaluating and prediciting until we are satisfied with accuracy of our neural network.
 
-In a next chapter we try to show whole process, for concrete dataset where we will start with simple model, and build more advanced model in order to achieve best possible accuarcy.
+In addition to mentioned functionality, Keras offers more functionality which are helpfull as well, like storing/loading trained models, printing/visualizing model details, optimization techniques to avoid overffiting/underfitting like dropouts, l1 /& l2 regularization, batch norms, callbacks during training etc.
 
-
-------------------------------
-
+In a next chapter we will show the whole process, how we can for concrete problem, develop a model in order to achieve best possible accuracy. We will start with simple model, then we will build new more advanced models applying regularization tricks in order to end with decent accuracy of the model.
 
 
-...
-
-Picking the right network architecture is more an art than a science; and although
-there are some best practices and principles you can rely on, only practice can help
-you become a proper neural-network architect. 
+### <a id="41"></a> MNIST Handwritten Digits classifier
 
 
+The MNIST (“NIST” stands for National Institute of Standards and Technology while the “M”
+stands for “modified” since data has been preprocessed to reduce any burden on computer vision
+processing and focus solely on the task of digit recognition) dataset is one of the most studied
+datasets in the computer vision and machine learning literature.
 
+The goal of dataset is to classify the handwritten digits from 0 to 9. 
+
+MNIST itself consists of 60,000 training images and 10,000 testing images. Each image is represented as 784 dim vector, corresponding to the 28x28 grayscale pixel for each image. Grayscale pixel intensities are unsigned integers, falling into the range [0;255]. 
+
+All digits are placed on a black background with the foreground being white and shades of gray. Given these raw pixel intensities,
+our goal is to train a neural network to correctly classify the digits.
+
+#### Load Data 
+
+Dataset can be fetched using keras, as follows:
+
+```
+from keras.datasets import mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+```
+
+Inputs training images(variable train_images) has shape (60000, 28, 28), while test images(variable test_images) has shape (10000, 28, 28). Train labels(variable train_labels) has shape (10000, 10), while test labels(variable test_labels) has shape (10000, 10).
+
+For a multilayer perceptron inputs will be reshaped from 28 x 28 matrix to 784 vector.
+
+```
+trainInputs = trainInputs.reshape(60000, 784)
+testInputs = testInputs.reshape(10000, 784)
+```
+
+We will scale value of the images from range 0:255 to range 0:1
+
+```
+# covert data to float32
+trainInputs.astype('float32')
+testInputs.astype('float32')
+
+# scale a values of the data from 0 to 1
+trainInputs = trainInputs / 255
+testInputs = testInputs / 255
+```
+
+Labels will be coverted to vectors:
+
+```
+trainLabelsOneHot = to_categorical(train_labels)
+testLabelsOneHot = to_categorical(test_labels)
+```
+
+After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron, with input layer,one hidden layerrons, relu as activation function and output layer(10 neurons, softmax as activation function):
+
+```
+model = Sequential()
+
+model.add(Dense(512, activation='relu', input_shape=(784,)))        
+model.add(Dense(10, activation='softmax'))
+```
+
+
+
+#### Multilayer Perceptron
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
+
+
+
+#### Convolutional network
+
+#### 
+
+#### Model Optimization
+* Understand Model Behavior During Training
+
+* Reduce Overfitting with Dropout Regularization
+* Lift Performance with Learning Rate Schedules
 
 
  

@@ -98,7 +98,7 @@ def main():
                                                                                                  test_images, 
                                                                                                  test_labels, 
                                                                                                  isConvModel)
-         
+        print(train_labels_one_hot.shape)
         # now data is processed and we are ready to build a network
         model = Model.getModel(modelName)
         
@@ -112,7 +112,6 @@ def main():
         model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
                                     './outputs/' + utils.getStartTime() + '_' + modelName + '.h5',
                                     monitor = 'val_acc',
-                                    #save_best_only = True,
                                     verbose = 1,
                                     period = hyper_params.epochs)
         
