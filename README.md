@@ -899,10 +899,10 @@ model.compile(optimizer = 'adam', loss= 'categorical_crossentropy',  metrics=['a
 We will train our model with 60 epochs, batch_size will be 256.
 Keras fit function accepts [callbacks](https://keras.io/callbacks/), so for training we will define two callbacks:
 
- * TimeCallback
+ * TimeCallback   
    counts time needed to execute one epoch
 
- * ModelCheckpoint
+ * ModelCheckpoint   
    save the model after every epoch
 
 Implementation of the TimeCallback:
@@ -924,7 +924,7 @@ class TimeCallback(keras.callbacks.Callback):
 
 We will define validation dataset which is in sact our test images and test labels.
 
-Fit function returns history object which is collection of the metrics collected after each epoch. In fact history object is callback which is automatically registered once fit() method is invoked.
+Keras fit() function returns history object which is collection of the metrics collected after each epoch. In fact history object is callback which is automatically registered once fit() method is invoked.
 
 Fit function will look like:
 
@@ -955,14 +955,76 @@ Now you are ready to train model with command:
 python mnist.py -m mlp_one_layer
 ```
 
-After 60 epochs accuracy on training images is 100%, and accuracy on test images is 98.31%.
+After 60 epochs accuracy on training images is 100%, and accuracy on test images(val_acc) is 98.31%.
 ```
 Epoch 60/60
 60000/60000 [==============================] - 3s 55us/step - loss: 1.0969e-04 - acc: 1.0000 - val_loss: 0.0777 - val_acc: 0.9831
 ```
 
+Now we can evaluate trained model:
+
+```
+[test_loss, test_acc] = model.evaluate(test_data, test_labels_one_hot)
+```
+evaluate() method computes the loss based on the input you pass it.
+Internaly method predicts the output for the given input and then computes the loss function specified in the model.compile method.
+
+After evaluation we are finaly ready for prediction:
+
+```
+prediction = model.predict(test_data, hyper_params.batch_size)
+```
+
+Method predict() returns numpy array with 10 values(last layer in our model is fully connected layer with 10 neurons), where  each element holds probability for each digit(0-9).
+
+classification report ...
+
+
+Our first loop is completed, ModelCheckpoint callback will save model, so we can use it later on.
+
+So, what now, are we are satified with results, should we consider to try to improve a model ?
+
+One way would be to change some hyperpameters in our model, like new optimizer(rsmprop), bacth size, number of epochs, activation function in hidden layers, number of neurons in hidden laye, extend a model with new layers.
+another way would be to even develop completely new model.
+
+If we train a model with any change comparing to previous one, we should be able to compare new results with previous one. We will use history object which is returned by fit() method and using matplotlib draw graphs:
+
+```
+
+...
+plt.style.use("ggplot")
+plt.plot(history.history[type])
+plt.plot(history.history[valType])    
+plt.xlabel('Epoch')
+plt.ylabel(type)
+plt.legend(['Training ' + str(type) + ' : ' +  str(history.history[type][epochs-1]), 'Validation ' +str(type) + ' : ' +  str(history.history[valType][epochs-1])])
+...
+
+
+```
+
+So for our very first model we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_loss_e60.png "MNIST One Layer Perceptron - loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_times_e60.png "MNIST One Layer Perceptron - times for each epoch")
+
+Summary of the model is presented using Keras model.summar() method:
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+dense_1 (Dense)              (None, 512)               401920
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                5130
+=================================================================
+Total params: 407,050
+Trainable params: 407,050
+Non-trainable params: 0
+
 
 
 
@@ -977,7 +1039,10 @@ Epoch 60/60
 #### 
 
 #### Model Optimization
-* Understand Model Behavior During Training
+
+Keras Callbacks
+
+* Understand Model Behavior During Training By Plotting History
 
 * Reduce Overfitting with Dropout Regularization
 * Lift Performance with Learning Rate Schedules

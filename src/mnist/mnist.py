@@ -127,7 +127,7 @@ def main():
         
         [test_loss, test_acc] = model.evaluate(test_data, test_labels_one_hot)
         
-        print("Baseline Error: {} test_loss {} , test_acc {}  ".format((100-test_acc*100), test_loss, test_acc))    
+        print("Baseline Error: {} val_loss {} , val_acc {}  ".format((100-test_acc*100), test_loss, test_acc))    
                                 
         prediction = model.predict(test_data, hyper_params.batch_size)
         
