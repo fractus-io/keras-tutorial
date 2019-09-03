@@ -1010,7 +1010,7 @@ So for our very first model we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_loss_e60.png "MNIST One Layer Perceptron - loss after 60 epochs")
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_times_e60.png "MNIST One Layer Perceptron - times for each epoch")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_times_e_60.png "MNIST One Layer Perceptron - times for each epoch")
 
 Summary of the model is presented using Keras model.summar() method:
 
