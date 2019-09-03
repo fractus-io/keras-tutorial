@@ -1015,12 +1015,12 @@ So for our very first model we have following graphs:
 Summary of the model is presented using Keras model.summar() method:
 
 _________________________________________________________________
-Layer (type)                 Output Shape              Param #
-=================================================================
+Layer (type)                 Output Shape              Param 
+_________________________________________________________________
 dense_1 (Dense)              (None, 512)               401920
 _________________________________________________________________
 dense_2 (Dense)              (None, 10)                5130
-=================================================================
+_________________________________________________________________
 Total params: 407,050
 Trainable params: 407,050
 Non-trainable params: 0
