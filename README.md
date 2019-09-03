@@ -411,9 +411,9 @@ dense_2 (Dense)              (None, 6)                 42
 _________________________________________________________________
 dense_3 (Dense)              (None, 1)                 7
 _________________________________________________________________
-Total params: 121
-Trainable params: 121
-Non-trainable params: 0
+Total params: 121   
+Trainable params: 121   
+Non-trainable params: 0   
 
 ```
 # Adding the input layer and the first hidden layer
@@ -1021,9 +1021,9 @@ dense_1 (Dense)              (None, 512)               401920
 _________________________________________________________________
 dense_2 (Dense)              (None, 10)                5130
 _________________________________________________________________
-Total params: 407,050
-Trainable params: 407,050
-Non-trainable params: 0
+Total params: 407,050   
+Trainable params: 407,050   
+Non-trainable params: 0   
 
 
 
