@@ -1121,6 +1121,10 @@ Graphs:
 
 #### 
 
+
+
+
+
 #### Model Optimization
 
 Keras Callbacks
@@ -1129,6 +1133,17 @@ Keras Callbacks
 
 * Reduce Overfitting with Dropout Regularization
 * Lift Performance with Learning Rate Schedules
+...
+* Image Augementing
+* transfer learning
+* typical CNN architecture
+* improve nn with hyperparm optimiztion(Keras callbacks)
+* RNN/LSTM
+* debug Keras models(list layers, show weigths, biases, ...)
+* expose keras model via REST
+
+
+
 
 
  
