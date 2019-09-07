@@ -1059,7 +1059,7 @@ Summary of the model:
 
 Other parameters will remain the same as with MLP model with one hidden layer.
 
-After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to previous one.
+After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to MLP model with one hidden layer.
 
 Graphs:
 
@@ -1070,7 +1070,53 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
-#### Convolutional Network
+#### Convolutional Neuarl Network
+
+Now we will try to build simple Convolutional neural network(CNN). Details about CNN is explained here.
+
+Model will have:
+
+ * input layer   
+ * Convolutional layer with 32 neurons, relu as activation function   
+ * MaxPooling layer
+ * Convolutional layer with 64 neurons, relu as activation function   
+ * MaxPooling layer
+ * Convolutional layer with 64 neurons, relu as activation function   
+ * Flatten layer
+ * Convolutional layer with 64 neurons, relu as activation function  
+ * fully connected layer with 64 neurons, relu as activation function  
+ * output layer with 10 neurons(due to 10 output labels) softmax as activation function   
+ 
+```
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 )))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(10, activation='softmax'))  
+
+```
+
+Summary of the model:
+
+
+
+Other parameters will remain the same as with MLP models.
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is 99.34%, which is again improvement in comparism to MLP models.
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_acc_e60.png "CNN - accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_loss_e60.png "CNN - loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_times_e_60.png "CNN - times for each epoch")
 
 
 #### 
