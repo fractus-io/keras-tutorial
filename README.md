@@ -879,7 +879,14 @@ trainLabelsOneHot = to_categorical(train_labels)
 testLabelsOneHot = to_categorical(test_labels)
 ```
 
-After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron, with input layer,one hidden layer(512 neurons, relu as activation function) and output layer(10 neurons-> due to 10 output labels, softmax as activation function):
+#### Define & train Model, Multy Layer Perceptron(one layer) 
+
+After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron:
+
+ * input layer   
+ * hidden layer with 512 neurons, relu as activation function   
+ * output layer with 10 neurons(due to 10 output labels) softmax as activation function   
+
 
 ```
 model = Sequential()
@@ -887,6 +894,19 @@ model = Sequential()
 model.add(Dense(512, activation='relu', input_shape=(784,)))        
 model.add(Dense(10, activation='softmax'))
 ```
+
+Keras offers handy method modelsumary() which prints summary of the model, so for model summary looks as follows:
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param 
+_________________________________________________________________
+dense_1 (Dense)              (None, 512)               401920
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                5130
+_________________________________________________________________
+Total params: 407,050   
+Trainable params: 407,050   
+Non-trainable params: 0  
 
 Adam optimizer will be used(feel free to play with another optimizer like rmsprop), due to 10 output label, loss function will be categorical_crossentropy.
 
@@ -897,7 +917,7 @@ model.compile(optimizer = 'adam', loss= 'categorical_crossentropy',  metrics=['a
 ```
 
 We will train our model with 60 epochs, batch_size will be 256.
-Keras fit function accepts [callbacks](https://keras.io/callbacks/), so for training we will define two callbacks:
+Keras fit() function accepts [callbacks](https://keras.io/callbacks/), so for training we will define two callbacks:
 
  * TimeCallback   
    counts time needed to execute one epoch
@@ -922,9 +942,9 @@ class TimeCallback(keras.callbacks.Callback):
         self.times.append(time.time() - self.epoch_start_time)
 ```
 
-We will define validation dataset which is in sact our test images and test labels.
+We will define validation dataset which is in fact our dataset consist of test images and test labels.
 
-Keras fit() function returns history object which is collection of the metrics collected after each epoch. In fact history object is callback which is automatically registered once fit() method is invoked.
+Keras fit() function returns history object which is collection of the metrics collected after each epoch. History object is also a callback which is automatically registered once fit() method is invoked.
 
 Fit function will look like:
 
@@ -955,11 +975,13 @@ Now you are ready to train model with command:
 python mnist.py -m mlp_one_layer
 ```
 
-After 60 epochs accuracy on training images is 100%, and accuracy on test images(val_acc) is 98.31%.
+After 60 epochs accuracy on test images(val_acc) is 98.31%.
 ```
 Epoch 60/60
 60000/60000 [==============================] - 3s 55us/step - loss: 1.0969e-04 - acc: 1.0000 - val_loss: 0.0777 - val_acc: 0.9831
 ```
+
+#### Evalute trained model
 
 Now we can evaluate trained model:
 
@@ -977,7 +999,8 @@ prediction = model.predict(test_data, hyper_params.batch_size)
 
 Method predict() returns numpy array with 10 values(last layer in our model is fully connected layer with 10 neurons), where  each element holds probability for each digit(0-9).
 
-classification report ...
+... classification report ...
+
 
 
 Our first loop is completed, ModelCheckpoint callback will save model, so we can use it later on.
@@ -987,8 +1010,9 @@ So, what now, are we are satified with results, should we consider to try to imp
 One way would be to change some hyperpameters in our model, like new optimizer(rsmprop), bacth size, number of epochs, activation function in hidden layers, number of neurons in hidden laye, extend a model with new layers.
 another way would be to even develop completely new model.
 
-If we train a model with any change comparing to previous one, we should be able to compare new results with previous one. We will use history object which is returned by fit() method and using matplotlib draw graphs:
+If we train a model with any mentiond change comparing to previous one, we should be able to compare new results with previous one. Therfore we will use history object which is returned by fit() method and using Python matplotlib library draw graphs which willbe stored for analisys.
 
+You can see part of the code bellow, but for full implementetion please, check methods drawGraphByType(), drawAccLossGraph(), drawTimes() in module./src/mnist/utils.py
 ```
 
 ...
@@ -1000,10 +1024,9 @@ plt.ylabel(type)
 plt.legend(['Training ' + str(type) + ' : ' +  str(history.history[type][epochs-1]), 'Validation ' +str(type) + ' : ' +  str(history.history[valType][epochs-1])])
 ...
 
-
 ```
 
-So for our very first model we have following graphs:
+So for our very first model on a MNIST dataset we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
 
@@ -1012,29 +1035,43 @@ So for our very first model we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_times_e_60.png "MNIST One Layer Perceptron - times for each epoch")
 
-Summary of the model is presented using Keras model.summar() method:
+Now let's see how we can improve model.
 
-_________________________________________________________________
-Layer (type)                 Output Shape              Param 
-_________________________________________________________________
-dense_1 (Dense)              (None, 512)               401920
-_________________________________________________________________
-dense_2 (Dense)              (None, 10)                5130
-_________________________________________________________________
-Total params: 407,050   
-Trainable params: 407,050   
-Non-trainable params: 0   
+#### Multy Layer Perceptron with two hidden layers
+
+Now we will add second layer, so our model will have:
+
+ * input layer   
+ * hidden layer with 512 neurons, relu as activation function   
+ * hidden layer with 512 neurons, relu as activation function   
+ * output layer with 10 neurons(due to 10 output labels) softmax as activation function   
+
+```
+model = Sequential()
+
+model.add(Dense(512, activation='relu', input_shape=(784,)))
+model.add(Dense(512, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+```
+Summary of the model:
 
 
+Other parameters will remain the same as with MLP model with one hidden layer.
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to previous one.
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_twp_layer_acc_e60.png "MNIST Two Layers Perceptron - accuracy after 60 epochs")
 
 
-#### Multilayer Perceptron
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layer_loss_e60.png "MNIST Two Layers Perceptron - loss after 60 epochs")
 
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layer_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
+#### Convolutional Network
 
-
-
-#### Convolutional network
 
 #### 
 
