@@ -1081,7 +1081,12 @@ python mnist.py -m mlp_two_layers
 ```
 
 After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to MLP model with one hidden layer.
-...
+
+```
+Epoch 60/60
+60000/60000 [==============================] - 9s 149us/step - loss: 7.4318e-07 - acc: 1.0000 - val_loss: 0.0991 - val_acc: 0.9859
+```
+
 
 Graphs:
 
@@ -1125,6 +1130,29 @@ model.add(Dense(10, activation='softmax'))
 
 Summary of the model:
 
+_________________________________________________________________
+Layer (type)                 Output Shape              Param 
+=================================================================
+conv2d_1 (Conv2D)            (None, 26, 26, 32)        320
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 13, 13, 32)        0
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 11, 11, 64)        18496
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 5, 5, 64)          0
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 3, 3, 64)          36928
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 576)               0
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                36928
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                650
+=================================================================
+Total params: 93,322
+Trainable params: 93,322
+Non-trainable params: 0
+_________________________________________________________________
 
 
 Other parameters will remain the same as with MLP models.
@@ -1192,6 +1220,8 @@ In Keras, we can directly apply regularization to any layer using the regularize
 
 Below is the where we extended simple CNN with L1 and L2 regularizers:
 
+L1
+
 ```
 
 model = Sequential()
@@ -1209,9 +1239,6 @@ model.add(Dense(10, activation='softmax'))
 
 Summary of the model:
 
-
-
-Other parameters will remain the same as with MLP models.
 
 Model can be trained with command:
 
@@ -1232,6 +1259,7 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_times_e_60.png "CNN L1 - times for each epoch")
 
+L2
 
 ```
 
@@ -1249,10 +1277,6 @@ model.add(Dense(10, activation='softmax'))
 ```
 
 Summary of the model:
-
-
-
-Other parameters will remain the same as with MLP models.
 
 Model can be trained with command:
 
@@ -1273,23 +1297,142 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l2_times_e_60.png "CNN L1 - times for each epoch")
 
+#### Batch Normalization
+
+...
+
+```
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 )))
+model.add(MaxPooling2D((2, 2)))
+model.add(BatchNormalization())
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(BatchNormalization())
+model.add(Dense(10, activation='softmax'))   
+
+
+```
+
+Summary of the model:
+
+Model can be trained with command:
+
+```
+python mnist.py -m conv_net_batch_norm
+```
+
+...
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is ...
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_batch_norm_acc_e60.png "CNN Batch Norm - accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_batch_norm_loss_e60.png "CNN Batch Norm - loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_batch_norm_times_e_60.png "CNN Batch Norm - times for each epoch")
 
 
 #### Dropouts
 
-This is the one of the most interesting types of regularization techniques. It also produces very good results and is consequently the most frequently used regularization technique in the field of deep learning.
+This is the one of the most interesting types of regularization techniques. It produces very good results and is consequently the most frequently used regularization technique in the field of deep learning.
 
-To understand dropout, let’s say our neural network structure is akin to the one shown below:
+So what does dropout do? At every iteration, it randomly selects some nerons fromneural network and removes them along with all of their incoming and outgoing connections as shown below.
 
-So what does dropout do? At every iteration, it randomly selects some nodes and removes them along with all of their incoming and outgoing connections as shown below.
+...
 
 So each iteration has a different set of nodes and this results in a different set of outputs. It can also be thought of as an ensemble technique in machine learning.
 
 Ensemble models usually perform better than a single model as they capture more randomness. Similarly, dropout also performs better than a normal neural network model.
 
-This probability of choosing how many nodes should be dropped is the hyperparameter of the dropout function. As seen in the image above, dropout can be applied to both the hidden layers as well as the input layers.
+The probability of choosing how many nodes should be dropped is the hyperparameter of the dropout function. Dropout can be applied to both the hidden layers as well as the input layers.
 
-In keras, we can implement dropout using the keras core layer. Below is the python code for it:
+In Keras, we can implement dropout using the keras core layer. Below is the python code for it multy layer perceptron and for CNN:
+
+MLP
+
+
+```
+
+model = Sequential()
+model.add(Dense(512, activation='relu', input_shape=(784,)))
+model.add(Dropout(0.5))
+model.add(Dense(512, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))   
+
+```
+
+Summary of the model:
+
+Model can be trained with command:
+
+```
+python mnist.py -m mlp_two_layers_dropout
+```
+
+...
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is ...
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_dropout_e60.png "MNIST Two Layers Perceptron Dropout - accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_dropout_loss_e60.png "MNIST Two Layers Perceptron Dropout - loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_dropout_times_e_60.png "MNIST Two Layers Perceptron Dropout - times for each epoch")
+
+
+CNN
+
+```
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 )))
+model.add(MaxPooling2D((2, 2)))
+model.add(Dropout(0.25))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))     
+
+
+```
+
+Summary of the model:
+
+Model can be trained with command:
+
+```
+python mnist.py -m conv_net_dropout
+```
+
+...
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is ...
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_dropout_acc_e60.png "CNN Droout - accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_dropout_loss_e60.png "CNN Dropout - loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_dropout_times_e_60.png "CNN Dropout - times for each epoch")
+
+
 
 #### Data Augmentation
 
@@ -1307,7 +1450,7 @@ Below is the sample code to implement it.
 #### Data Augmentation
 
 
-#### Batch norm
+
 
 
 #### Early stopping
@@ -1347,7 +1490,7 @@ Keras Callbacks
 * expose keras model via REST
 * visualize models
 * evaluate models
-
+* cnn calculate layers inputs
 
 
 
