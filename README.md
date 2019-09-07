@@ -1063,12 +1063,12 @@ After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is
 
 Graphs:
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_twp_layer_acc_e60.png "MNIST Two Layers Perceptron - accuracy after 60 epochs")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_acc_e60.png "MNIST Two Layers Perceptron - accuracy after 60 epochs")
 
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layer_loss_e60.png "MNIST Two Layers Perceptron - loss after 60 epochs")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_loss_e60.png "MNIST Two Layers Perceptron - loss after 60 epochs")
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layer_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
 #### Convolutional Network
 
