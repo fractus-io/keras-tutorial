@@ -76,7 +76,7 @@ class Model:
             model.add(Dense(10, activation='softmax'))                
                     
         elif model_name == 'conv_net_l1':
-            model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 ), kernel_regularizer = regularizers.l2(0.0001)))
+            model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 ), kernel_regularizer = regularizers.l1(0.0001)))
             model.add(MaxPooling2D((2, 2)))
             model.add(Conv2D(64, (3, 3), activation='relu', kernel_regularizer = regularizers.l1(0.0001)))
             model.add(MaxPooling2D((2, 2)))
