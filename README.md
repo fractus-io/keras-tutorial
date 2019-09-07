@@ -1210,7 +1210,7 @@ After 60 epochs accuracy on accuracy on test images(val_acc) is ...
 
 Graphs:
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_acc_l1_e60.png "CNN L1- accuracy after 60 epochs")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_acc_e60.png "CNN L1- accuracy after 60 epochs")
 
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_loss_e60.png "CNN - L1 loss after 60 epochs")
