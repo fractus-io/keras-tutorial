@@ -1248,11 +1248,13 @@ Keras Callbacks
 * underfitting
 * Image Augementing
 * transfer learning
-* typical CNN architecture
+* typical CNN architectures
 * improve nn with hyperparm optimiztion(Keras callbacks)
 * RNN/LSTM
 * debug Keras models(list layers, show weigths, biases, ...)
 * expose keras model via REST
+* visualize models
+* evaluate models
 
 
 
