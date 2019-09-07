@@ -1059,7 +1059,14 @@ Summary of the model:
 
 Other parameters will remain the same as with MLP model with one hidden layer.
 
+Model can be trained with command:
+
+```
+python mnist.py -m mlp_two_layer
+```
+
 After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to MLP model with one hidden layer.
+...
 
 Graphs:
 
@@ -1107,6 +1114,14 @@ Summary of the model:
 
 Other parameters will remain the same as with MLP models.
 
+Model can be trained with command:
+
+```
+python mnist.py -m conv_net
+```
+
+...
+
 After 60 epochs accuracy on accuracy on test images(val_acc) is 99.34%, which is again improvement in comparism to MLP models.
 
 Graphs:
@@ -1119,13 +1134,107 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_times_e_60.png "CNN - times for each epoch")
 
 
-#### 
+Please note that to training time simple CNN is almost 2.5 times longer comparing to MLP models due to increased number of neurons and need convolutional steps.
 
 
 
+### <a id="41"></a> Model Optimization
+
+By introducing simple CNN accuracy on test data after 60 epochs is 99,34%, accuracy on a training data is 100%. 
+Looks very well so far, but do we have a problem, why we have difference between training and test data set ?
+
+If we closely check accuracy graph on simple CNN, we see gap between training and validation accuracy over the time.
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_acc_e60.png "CNN - accuracy after 60 epochs")
+
+The gap is example of the ***Overfitting***.
+
+Overfitting occurs when you achieve a good fit of your model on the training data, while it does not generalize well on new, unseen data. In other words, the model learned patterns specific to the training data, which are irrelevant in other data.
+
+We will use regularization technique in attempt to improve model and reduce overffiting.
+Regularization is a technique which makes slight modifications to the model such that the model generalizes better. This in turn improves the model’s performance on the unseen data as well.
+
+Keras provides handy support for regularitaion.
+
+#### L2 & L1 regularization
+
+L1 and L2 are the most common types of regularization. These update the general cost function by adding another term known as the regularization term.
+
+Cost function = Loss (say, binary cross entropy) + Regularization term
+
+Due to the addition of this regularization term, the values of weight matrices decrease because it assumes that a neural network with smaller weight matrices leads to simpler models. Therefore, it will also reduce overfitting to quite an extent.
+
+However, this regularization term differs in L1 and L2.
+
+In L2, we have:
 
 
-#### Model Optimization
+
+Here, lambda is the regularization parameter. It is the hyperparameter whose value is optimized for better results. L2 regularization is also known as weight decay as it forces the weights to decay towards zero (but not exactly zero).
+
+In L1, we have:
+
+
+
+In this, we penalize the absolute value of the weights. Unlike L2, the weights may be reduced to zero here. Hence, it is very useful when we are trying to compress our model. Otherwise, we usually prefer L2 over it.
+
+In keras, we can directly apply regularization to any layer using the regularizers.
+
+Below is the sample code to apply L2 regularization to a Dense layer.
+
+
+#### Dropouts
+
+This is the one of the most interesting types of regularization techniques. It also produces very good results and is consequently the most frequently used regularization technique in the field of deep learning.
+
+To understand dropout, let’s say our neural network structure is akin to the one shown below:
+
+So what does dropout do? At every iteration, it randomly selects some nodes and removes them along with all of their incoming and outgoing connections as shown below.
+
+So each iteration has a different set of nodes and this results in a different set of outputs. It can also be thought of as an ensemble technique in machine learning.
+
+Ensemble models usually perform better than a single model as they capture more randomness. Similarly, dropout also performs better than a normal neural network model.
+
+This probability of choosing how many nodes should be dropped is the hyperparameter of the dropout function. As seen in the image above, dropout can be applied to both the hidden layers as well as the input layers.
+
+In keras, we can implement dropout using the keras core layer. Below is the python code for it:
+
+#### Data Augmentation
+
+The simplest way to reduce overfitting is to increase the size of the training data. In machine learning, we were not able to increase the size of training data as the labeled data was too costly.
+
+But, now let’s consider we are dealing with images. In this case, there are a few ways of increasing the size of the training data – rotating the image, flipping, scaling, shifting, etc. In the below image, some transformation has been done on the handwritten digits dataset.
+
+This technique is known as data augmentation. This usually provides a big leap in improving the accuracy of the model. It can be considered as a mandatory trick in order to improve our predictions.
+
+In keras, we can perform all of these transformations using ImageDataGenerator. It has a big list of arguments which you you can use to pre-process your training data.
+
+Below is the sample code to implement it.
+
+
+#### Data Augmentation
+
+
+#### Batch norm
+
+
+#### Early stopping
+
+Early stopping is a kind of cross-validation strategy where we keep one part of the training set as the validation set. When we see that the performance on the validation set is getting worse, we immediately stop the training on the model. This is known as early stopping.
+
+n the above image, we will stop training at the dotted line since after that our model will start overfitting on the training data.
+
+In keras, we can apply early stopping using the callbacks function. Below is the sample code for it.
+
+from keras.callbacks import EarlyStopping
+
+EarlyStopping(monitor='val_err', patience=5)
+Here, monitor denotes the quantity that needs to be monitored and ‘val_err’ denotes the validation error.
+
+Patience denotes the number of epochs with no further improvement after which the training will be stopped. For better understanding, let’s take a look at the above image again. After the dotted line, each epoch will result in a higher value of validation error. Therefore, 5 epochs after the dotted line (since our patience is equal to 5), our model will stop because no further improvement is seen.
+
+ 
+
 
 Keras Callbacks
 
@@ -1133,7 +1242,10 @@ Keras Callbacks
 
 * Reduce Overfitting with Dropout Regularization
 * Lift Performance with Learning Rate Schedules
+
+
 ...
+* underfitting
 * Image Augementing
 * transfer learning
 * typical CNN architecture
