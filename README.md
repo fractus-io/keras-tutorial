@@ -1151,8 +1151,8 @@ The gap is example of the ***Overfitting***.
 
 Overfitting occurs when you achieve a good fit of your model on the training data, while it does not generalize well on new, unseen data. In other words, the model learned patterns specific to the training data, which are irrelevant in other data.
 
-We will use regularization technique in attempt to improve model and reduce overffiting.
-Regularization is a technique which makes slight modifications to the model such that the model generalizes better. This in turn improves the model’s performance on the unseen data as well.
+Regularization technique is used in order to reduce overffiting.
+Regularization makes slight modifications to the model such that the model generalizes better. This in turn improves the model’s performance on the unseen data as well.
 
 Keras provides handy support for regularitaion.
 
@@ -1160,27 +1160,62 @@ Keras provides handy support for regularitaion.
 
 L1 and L2 are the most common types of regularization. These update the general cost function by adding another term known as the regularization term.
 
+```
 Cost function = Loss (say, binary cross entropy) + Regularization term
+```
 
 Due to the addition of this regularization term, the values of weight matrices decrease because it assumes that a neural network with smaller weight matrices leads to simpler models. Therefore, it will also reduce overfitting to quite an extent.
 
 However, this regularization term differs in L1 and L2.
 
-In L2, we have:
+L2 regularization is also known as weight decay as it forces the weights to decay towards zero (but not exactly zero).
+
+In L1, we penalize the absolute value of the weights. Unlike L2, the weights may be reduced to zero here. 
+Hence, LQ it is very useful when we are trying to compress  the model. 
+
+In Keras, we can directly apply regularization to any layer using the regularizers.
+
+Below is the where we extended simple CNN with L1 and L2 regularizers:
+
+```
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 ), kernel_regularizer = regularizers.l1(0.0001)))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu', kernel_regularizer = regularizers.l1(0.0001)))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu', kernel_regularizer = regularizers.l1(0.0001)))
+model.add(Flatten())
+model.add(Dense(64, activation='relu', kernel_regularizer = regularizers.l1(0.0001)))
+model.add(Dense(10, activation='softmax'))    
+
+
+```
+
+Summary of the model:
 
 
 
-Here, lambda is the regularization parameter. It is the hyperparameter whose value is optimized for better results. L2 regularization is also known as weight decay as it forces the weights to decay towards zero (but not exactly zero).
+Other parameters will remain the same as with MLP models.
 
-In L1, we have:
+Model can be trained with command:
+
+```
+python mnist.py -m conv_net_l1
+```
+
+...
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is ...
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_acc_l1_e60.png "CNN L1- accuracy after 60 epochs")
 
 
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_loss_e60.png "CNN - L1 loss after 60 epochs")
 
-In this, we penalize the absolute value of the weights. Unlike L2, the weights may be reduced to zero here. Hence, it is very useful when we are trying to compress our model. Otherwise, we usually prefer L2 over it.
-
-In keras, we can directly apply regularization to any layer using the regularizers.
-
-Below is the sample code to apply L2 regularization to a Dense layer.
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_times_e_60.png "CNN L1 - times for each epoch")
 
 
 #### Dropouts
