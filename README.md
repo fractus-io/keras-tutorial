@@ -907,6 +907,7 @@ _________________________________________________________________
 Total params: 407,050   
 Trainable params: 407,050   
 Non-trainable params: 0  
+_________________________________________________________________
 
 Adam optimizer will be used(feel free to play with another optimizer like rmsprop), due to 10 output label, loss function will be categorical_crossentropy.
 
@@ -1056,13 +1057,27 @@ model.add(Dense(10, activation='softmax'))
 ```
 Summary of the model:
 
+_________________________________________________________________
+Layer (type)                 Output Shape              Param 
+=================================================================
+dense_1 (Dense)              (None, 512)               401920
+_________________________________________________________________
+dense_2 (Dense)              (None, 512)               262656
+_________________________________________________________________
+dense_3 (Dense)              (None, 10)                5130
+=================================================================
+Total params: 669,706
+Trainable params: 669,706
+Non-trainable params: 0
+_________________________________________________________________
+
 
 Other parameters will remain the same as with MLP model with one hidden layer.
 
 Model can be trained with command:
 
 ```
-python mnist.py -m mlp_two_layer
+python mnist.py -m mlp_two_layers
 ```
 
 After 60 epochs accuracy on accuracy on test images(val_acc) is 98.68%, which is slight improvement in comparism to MLP model with one hidden layer.
@@ -1216,6 +1231,48 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_loss_e60.png "CNN - L1 loss after 60 epochs")
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l1_times_e_60.png "CNN L1 - times for each epoch")
+
+
+```
+
+model = Sequential()
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 ), kernel_regularizer = regularizers.l2(0.0001)))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu', kernel_regularizer = regularizers.l2(0.0001)))
+model.add(MaxPooling2D((2, 2)))
+model.add(Conv2D(64, (3, 3), activation='relu', kernel_regularizer = regularizers.l2(0.0001)))
+model.add(Flatten())
+model.add(Dense(64, activation='relu', kernel_regularizer = regularizers.l2(0.0001)))
+model.add(Dense(10, activation='softmax'))  
+
+
+```
+
+Summary of the model:
+
+
+
+Other parameters will remain the same as with MLP models.
+
+Model can be trained with command:
+
+```
+python mnist.py -m conv_net_l2
+```
+
+...
+
+After 60 epochs accuracy on accuracy on test images(val_acc) is ...
+
+Graphs:
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l2_acc_e60.png "CNN L1- accuracy after 60 epochs")
+
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l2_loss_e60.png "CNN - L1 loss after 60 epochs")
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l2_times_e_60.png "CNN L1 - times for each epoch")
+
 
 
 #### Dropouts
