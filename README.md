@@ -9,13 +9,6 @@
 * Biologicals
 * Artificial Neural Networks - Forward Propagation
 
-#### Artificial Neural Networks
-* Gradient Descent
-* Backpropagation
-* Vanishing Gradient
-* Activation Functions
-
-
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
   * [Keras, TensorFlow, Theano, and CNTK](#311)
@@ -25,10 +18,17 @@
 	* [Install Tensorflow](#3123)
 	* [Install Keras](#3124)
   * [Configuring Keras](#313)
-* [Develop Your First Neural Network with Keras, XOR gate](#321)
-  * [Experiment](#3211)
-* [Multi Layer Perceptrons](#331)
-* [Summary](#341)
+* [Develop Your First Neural Network with Keras, XOR gate](#32)
+  * [Experiment](#321)
+* [Multi Layer Perceptrons](#33)
+  * [Load data](#331)
+  * [Prepare data](#332)
+  * [Define Model](#333)
+  * [Compile Model](#334)
+  * [Fit Model](#335)
+  * [Evaluate Model](#336)
+  * [Experiment](#337)
+* [Summary](#34)
 
 
 #### Deep Learning Models
@@ -66,6 +66,7 @@
 #### <a id="1"></a>Introduction To Deep Learning
 ...
 
+# Deep Learning with Keras
 ## <a id="31"></a>Introduction To Keras
 
 Keras is a high-level neural networks API, written in Python and which can be run on top of the TensorFlow, CNTK, or Theano. 
@@ -225,7 +226,7 @@ Json file consist of the key/value pairs as follows:
  * **backend**, type: String, values: **tensorflow**, **theano**, or **cntk**. Default back-end.
  * **image_data_format**, type: String, values: **channels_last** or **channels_first**. Image data format.
 
-## <a id="321"></a>Develop Your First Neural Network with Keras, XOR gate
+## <a id="32"></a>Develop Your First Neural Network with Keras, XOR gate
 
 In Neural Network [module](https://render.githubusercontent.com/view/ipynb?commit=336ec43a511fd144a1e373f1f3a53feeb9d915ae&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f667261637475732d696f2f6e657572616c2d6e6574776f726b732d7475746f7269616c2f333336656334336135313166643134346131653337336631663361353366656562396439313561652f4e657572616c4e6574776f726b734261736963732e6970796e62&nwo=fractus-io%2Fneural-networks-tutorial&path=NeuralNetworksBasics.ipynb&repository_id=175053175&repository_type=Repository#MultiLayerPerceptronBackpropagationAlgorithm) we showed that problem with XOR gate can't be solved using single layer perceptron. The XOR gate, can be solved with multy layer perceptrons. In that example complex backpropagation algorithm with limited functionality has been implemented directly in source code. 
 
@@ -282,7 +283,7 @@ python xor.py
 
 Result of the learning process is printed in console for each epoch, we can see that after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 lines of code.
 
-### Experiment
+### <a id="321"></a>Experiment
 
 Try to develop network with 1 and/or 3 hidden layers, play with number of neurons(do not change size of the input and output neurons), change optimizers e.g. adam, rsmprop, sgd. change number of epochs.
 After every change run command:
@@ -294,7 +295,7 @@ python xor.py
 
 and check results.
 
-## <a id="331"></a>Multi Layer Perceptrons
+## <a id="33"></a>Multi Layer Perceptrons
 
 Now we will show more realistic example which can be solved using Multi Layer Perceptrons
 
@@ -340,7 +341,7 @@ RowNumber,CustomerId,Surname,CreditScore,Geography,Gender,Age,Tenure,Balance,Num
 6,15574012,Chu,645,Spain,Male,44,8,113755.78,2,1,0,149756.71,1
 ```
 
-### Load data
+### <a id="331"></a>Load data
 
 For loading a data we will use Pandas DataFrame which gives us elegant interface for loading.
 Dataset is attached to git repo. 
@@ -349,7 +350,7 @@ Dataset is attached to git repo.
 dataset = pd.read_csv('Churn_Modelling.csv')
 ```
 
-### Prepare data
+### <a id="332"></a>Prepare data
 
 As we already mentioned dataset has 14 columns, but columns **RowNumber** and **CustomerId** are not useful for our analysis, so we will exclude them.
 Column **Exited** is our target variable.
@@ -394,7 +395,7 @@ X = sc.fit_transform(X)
 
 Finally data is prepared, so we can move to nedxt step, which is modeling the Neural Network.
 
-### Define Model
+### <a id="333"></a>Define Model
 
 Models in Keras are deﬁned as a sequence of layers. 
 
@@ -441,7 +442,7 @@ model.add(Dense(6, init = 'uniform', activation = 'relu'))
 model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))	
 ```
 
-### Compile Model
+### <a id="334"></a>Compile Model
 
 Once model is deﬁned, we can compile it. 
 
@@ -463,7 +464,7 @@ model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accu
 
 Our Neural Network is now ready to be trained.
 
-### Fit Model
+### <a id="335"></a>Fit Model
 
 Once model has been defined and compiled, the model is ready for traning. We should give some data to the model and execute the training process. Training of the model is done by calling the ***fit()*** function on the model.
 
@@ -477,7 +478,7 @@ The training process will be executed for a fixed number of iterations through t
 
 ***fit()*** function has much more arguments, but for this example we will define minimum, so in addition to epochs argument, we will define batch_size argument which is number of instances that are evaluated before a weight update in the network is performed 
     
-### Evaluate Model
+### <a id="336"></a>Evaluate Model
 
 Our model has been trained on the entire dataset, so we can evaluate the performance
 of the network on the same dataset. This will only give us an idea of how well we have modeled
@@ -519,7 +520,7 @@ Epoch 100/100
 
 So we have implemented network which solves real problem of predicting will concrete customer leave or stay in the bank.
 
-### Experiment
+### <a id="337"></a>Experiment
 
 Try to change network with adding more layers, play with number of nodes(do not change size of the input and output nodes), change optimizers e.g. adam, rsmprop, sgd., change number of epochs.
 After every change run command:
@@ -533,7 +534,7 @@ and check the results.
 
 
 
-### <a id="341"></a>Summary
+### <a id="34"></a>Summary
 
 As you can see, during a process of finding appropriate neural network for specific problem, we need to make a lot of 
 decision and continuously repeat following steps: 
@@ -559,7 +560,7 @@ During mentioned process, we also need to make lot of decision, like:
  
 In a next chapter we will show you how Keras helps us in order to easily implement mentioned steps.
 
-# >Deep Learning Models
+# Deep Learning Models
 
 ## <a id="41"></a>Keras Models
 
