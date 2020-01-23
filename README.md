@@ -15,6 +15,7 @@
 * Vanishing Gradient
 * Activation Functions
 
+
 #### Deep Learning with Keras
 * [Introduction to Keras](#31)
   * [Keras, TensorFlow, Theano, and CNTK](#311)
@@ -27,6 +28,22 @@
 
 #### Deep Learning Models
 * [Keras Models](#41)
+    * [Sequential API](#42)
+    * [Layers](#43)
+    * [Activation functions](#44)
+    * [Initializers](#45)
+    * [Compilations](#46)
+    * [Optimizers](#47)
+    * [Loss functions](#48)
+    * [Training](#49)
+    * [Evaluate](#410)
+    * [Predict](#411)
+    * [Summary](#412)
+
+
+
+....
+
 * Shallow and Deep Neural Networks
 * Model Architectures
 * Train the Model
@@ -47,21 +64,21 @@
 
 ## <a id="31"></a>Introduction To Keras
 
-Keras is a high-level neural networks API, written in Python and capable of running on top of TensorFlow, CNTK, or Theano. 
-It was developed with a focus on enabling fast experimentation. Being able to go from idea to result with the least possible delay is key to 
-doing good research. Kears runs on Python 2.7 or 3.6 and can seamlessly execute on GPUs and CPUs given the underlying frameworks. 
+Keras is a high-level neural networks API, written in Python and which can be run on top of the TensorFlow, CNTK, or Theano. 
+It was developed with a focus on enabling fast experimentation. 
+Keras runs on Python 2.7 or 3.6 and can easily be executed on GPUs and CPUs. 
 Keras was initially developed for researchers, with the aim of enabling fast experimentation.
 
 Keras has following features:
 
-* Allows easy and fast prototyping (through user friendliness, modularity, and extensibility).
-* Supports both convolutional networks and recurrent networks, as well as combinations of the two.
-* Runs seamlessly on CPU and GPU.
+* easy and fast prototyping (through user friendliness, modularity, and extensibility)
+* supports both convolutional networks and recurrent networks, as well as combinations of the two
+* runs on CPU and GPU.
 
 Keras was developed as part of the research effort of project ONEIROS (Open-ended Neuro-Electronic Intelligent Robot Operating System), 
 and its primary author and maintainer is François Chollet, a Google engineer.
 
-Keras is based on following guiding principles:
+According to Keras documentation, the framework is based on following guiding principles:
 * **User friendliness**    
 	Keras is an API designed for human beings, not machines. Keras follows best practices for reducing cognitive load: it offers consistent & simple 
 	APIs, it minimizes the number of user actions required for common use cases, and it provides clear and actionable feedback upon user error.
@@ -204,28 +221,13 @@ Json file consist of the key/value pairs as follows:
  * **backend**, type: String, values: **tensorflow**, **theano**, or **cntk**. Default back-end.
  * **image_data_format**, type: String, values: **channels_last** or **channels_first**. Image data format.
 
-#### A quick note on **image_data_format**
-
-Using TensorFlow, images are represented as NumPy arrays with the shape (height, width, depth), 
-where the depth is the number of channels in the image.
-
-However, if you are using Theano, images are instead assumed to be represented as (depth, height, width).
-
-This little nuance is the source of a lot of headaches when using Keras.
-So, when your model is working wit images and if you are getting strange results when using 
-Keras(or an error message related to the shape of a given tensor) you should:
-
- * Check your back-end
- * Ensure your image dimension ordering matches your back-end
-
-
 ### <a id="321"></a>Develop Your First Neural Network with Keras, XOR gate
 
 In Neural Network [module](https://render.githubusercontent.com/view/ipynb?commit=336ec43a511fd144a1e373f1f3a53feeb9d915ae&enc_url=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f667261637475732d696f2f6e657572616c2d6e6574776f726b732d7475746f7269616c2f333336656334336135313166643134346131653337336631663361353366656562396439313561652f4e657572616c4e6574776f726b734261736963732e6970796e62&nwo=fractus-io%2Fneural-networks-tutorial&path=NeuralNetworksBasics.ipynb&repository_id=175053175&repository_type=Repository#MultiLayerPerceptronBackpropagationAlgorithm) we showed that problem with XOR gate can't be solved using single layer perceptron. The XOR gate, can be solved with multy layer perceptrons. In that example complex backpropagation algorithm with limited functionality has been implemented directly in source code. 
 
-Keras implements ***complex parts*** of neural networks, like backprop algorithm, various activation functions, weights initilaization strategies, loss function etc.,  so in our first example we will show how we can solve XOR gate problem using Keras. 
+Keras implements ***complex parts*** of neural networks, like backprop algorithm, activation functions, weights initilaization strategies, loss function etc., so our first example where we will show how to solve XOR gate problem using Keras, will be much simplier comaring to example from Neural Network module.
 
-We need to:
+We need to execute typical steps:
 
 prepare dataset:
 
@@ -234,7 +236,7 @@ X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 Y = np.array([[0], [1], [1], [0]])
 ```
 
-define neural network using Keras Sequential API:
+define neural network(multi layer perceptron) using Keras Sequential API, with input layer(2 neurons), two hidden layers(8 and 4 neurons, relu as activation fuction) and output layer(1 neuron, sigmoid as activation function):
 
 ```
 # Adding the input layer and the first hidden layer
@@ -245,7 +247,7 @@ model.add(Dense(4, activation = 'relu'))
 model.add(Dense(1, activation = 'sigmoid'))
 ```
 
-compile the model:
+compile the model, optimizer is adam, loss is binary crossentropy:
 
 ```
 model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
@@ -266,8 +268,6 @@ Neural network looks like:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp-xor.jpg "Multy Layer Perceptron - XOR gate")
 
-Already after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 line sof code.
-
 
 You can run whole process with command:
 
@@ -276,12 +276,25 @@ You can run whole process with command:
 python xor.py
 ```
 
+Result of the learning process is printed in console for each epoch, we can see that after 300 epochs, accuracy of the model is 100%, so the XOR gate problem is solved with Keras with less then 20 lines of code.
+
+#### Experiment
+
+Try to develop network with 1 and/or 3 hidden layers, play with number of neurons(do not change size of the input and output neurons), change optimizers e.g. adam, rsmprop, sgd. change number of epochs.
+After every change run command:
+
+```
+# from ./xor
+python xor.py
+```
+
+and check results.
 
 ### <a id="331"></a>Multi Layer Perceptrons
 
 Now we will show more realistic example which can be solved using Multi Layer Perceptrons
 
-Our goal is to predict which customer is going to leave the bank, this problem is usually called ***customer churn prediction***. 
+Our goal is to predict which customer is going to leave the bank. This problem is usually called ***customer churn prediction***. 
 This is a ***binary classiﬁcation problem***, while our network should predict is customer going to leave a bank as 1 or stay as 0. 
 
 As you can see from XOR example, typical steps which needs to be executed are:
@@ -375,7 +388,7 @@ X = sc.fit_transform(X)
 	
 ```
 
-Finally data are prepared, so we can start to model our Neural Network.
+Finally data is prepared, so we can move to nedxt step, which is modeling the Neural Network.
 
 #### Define Model
 
@@ -387,13 +400,13 @@ Such a network is called Multy Layer Perceptron network.
 First we create a Sequential model and add layers. 
 Fully connected layers are deﬁned using the Dense class, where we need to define following parameters:
 
-First parameter is **output_dim**. It is simply the number of nodes you want to add to this layer.  
-In Neural Network we need to assign weights to each mode which is nothing but importance of that node. 
+First parameter is **output_dim**. It is the number of nodes you want to add to this layer.  
+In Neural Network we need to assign weights to each node which is nothing but importance of that node. 
 At the time of initialization, weights should be close to 0 and we will randomly initialize weights using **uniform** function. 
 
 For input layer we have to define right number of inputs. 
-This can be speciﬁed when creating the ﬁrst layer with the **input_dim**. Remember in our case total number of input variables are 11.
-Second layer model automatically knows the number of input variables from the first hidden layer.
+This can be speciﬁed when creating the ﬁrst layer with the **input_dim**. Remember in our case total number of input variables are 11(14 columns, two columns excluded, last columns is output).
+Second layer in our model automatically knows the number of input variables from the first layer, so donćt need to take care about number of inputs for second, third etc. layers.
 
 For first two layers we will use **relu** activation functions, and since we want binary result from output layer, the in last layer we will use **sigmoid** activation function.
 
@@ -426,14 +439,12 @@ model.add(Dense(1, init = 'uniform', activation = 'sigmoid'))
 
 #### Compile Model
 
-Now model is deﬁned, so we can compile it. 
-Compiling the model uses the eﬃcient numerical libraries under the covers (the so-called back-end) such as **Theano** or **TensorFlow**. 
-The back-end automatically chooses the best way to represent the network for training and making predictions to run on your hardware. 
+Once model is deﬁned, we can compile it. 
 
 Training a network means ﬁnding the best set of weights to make predictions for this problem. 
-When compiling, we must specify some  properties required when training the network. 
+When compiling, we must specify some properties which are required during training of the network. 
 
-First argument is **Optimizer**, this is nothing but the algorithm you wanna use to find optimal set of weights.
+First argument is **Optimizer**, this is algorithm you wanna use to find optimal set of weights.
 During model definition phase we already initialized weights, but now we are applying some sort of algorithm which will optimize weights in turn making out Neural Network more powerful. 
 This algorithm is **Stochastic Gradient Descent(SGD)**. 
 Among several types of **SGD** algorithm the one which we will use is **Adam**. 
@@ -446,12 +457,11 @@ We want to improve performance of our Neural Network based on accuracy so we add
 model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])	
 ```
 
-Congratulations, you have build your first Deep Learning Neural Network model.
 Our Neural Network is now ready to be trained.
 
 #### Fit Model
 
-Once our model has been defined and compiled, the model is ready for traning. We should give some data to the model and executethe training process. Training of the model is done by calling the ***fit()*** function on the model.
+Once model has been defined and compiled, the model is ready for traning. We should give some data to the model and execute the training process. Training of the model is done by calling the ***fit()*** function on the model.
 
 ```
 # fit the model
@@ -461,7 +471,7 @@ model.fit(X, Y, batch_size = 10, epochs = 100)
 The training process will be executed for a fixed number of iterations through the dataset called
 ***epochs***, so we must define epochs argument in ***fit()*** function. 
 
-***fit()*** function has much more arguments, but for this example we will define minimum, so in addition to epochs argument, we will define batch_size argument which io  number of instances that are evaluated before a weight update in the network is performed 
+***fit()*** function has much more arguments, but for this example we will define minimum, so in addition to epochs argument, we will define batch_size argument which is number of instances that are evaluated before a weight update in the network is performed 
     
 #### Evaluate Model
 
@@ -481,8 +491,7 @@ scores = model.evaluate(X, Y)
 print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
 ```
 
-Since this is very first example same data has been used for , so in future we will separate data into train and
-test datasets for the training and evaluation of your model.
+Since this is still introductionary example same data has been used for traning and evaluation, but in in future we will separate data into train and test datasets for the training and evaluation of your model.
 
 The whole process can be executed with command:
 
@@ -504,18 +513,32 @@ Epoch 100/100
 10000/10000 [==============================] - 3s 324us/step - loss: 0.3341 - acc: 0.8634
 ```
 
-Note: feel free to experiment, try change neural network architecture, change other parameters and see can you improve accuracy or the model.
+So we have implemented network which solves real problem of predicting will concrete customer leave or stay in the bank.
+
+#### Experiment
+
+Try to change network with adding more layers, play with number of nodes(do not change size of the input and output nodes), change optimizers e.g. adam, rsmprop, sgd., change number of epochs.
+After every change run command:
+
+```
+# from ./mlp
+python mlp.py
+```
+
+and check the results.
 
 
 
 ### <a id="341"></a>Summary
 
 As you can see, during a process of finding appropriate neural network for specific problem, we need to make a lot of 
-decision and to continuously loop over the steps: 
+decision and continuously repeat following steps: 
 
 Idea -> Code -> Experiment 
+Idea -> Code -> Experiment 
+Idea -> Code -> Experiment 
 
-So, we need to:
+During mentioned process, we also need to make lot of decision, like:
  * choose variables from dataset(feature engineering)
  * define architecture of the neural network
  * define number of layers
@@ -536,12 +559,13 @@ In a next chapter we will show you how Keras helps us in order to easily impleme
 
 ### <a id="41"></a>Keras Models
 
-Idea behined Keras is to be user friendly, modular, easy to extend. The API is ***designed for human beings, not machines,*** and ***follows best practices for reducing cognitive load***.
+Idea behined Keras is to be user friendly, modular, easy to extend.  
+The API is ***designed for human beings, not machines,*** and ***follows best practices for reducing cognitive load***.
 
 
 Neural layers, cost functions, optimizers, initialization schemes, activation functions, and regularization schemes are all standalone modules that you can combine to create a models. New modules are simple to add, as new classes and functions. 
 
-Keras Model API is used define neural network architecture by defining input layer, hidden layers, output layers, number of neurons in each layer, activation function for each layer etc.
+Keras Model API is used to define neural network architecture by defining input layer, hidden layers, output layers, number of neurons in each layer, activation function for each layer etc.
 
 The Model is the core Keras data structure. There are two main types of models available in Keras:
 * the Sequential API
@@ -549,24 +573,25 @@ The Model is the core Keras data structure. There are two main types of models a
 
 Functional API offers advanced way for defining models.
 It allows you to define multiple input or output models as well as models that share layers.
-Focus in this chapter will on on Sequential API.
 
-#### Sequential API
+Sequential API is simplier and it will be used in this chapter.
 
-The easiest way of creating a model in Keras is by using the sequential API, which lets you stack one layer after the other. 
+#### <a id="42"></a>Sequential API
+
+The easiest way of creating a model in Keras is by using the Sequential API, which lets you stack one layer after the other. 
 The problem with the sequential API is that it doesn’t allow models to have multiple inputs or outputs, which are needed for some problems.
 Nevertheless, the sequential API is a perfect choice for most problems.
 
 The fundamental data structure in neural networks is the layer. 
 ***A layer is a data-processing module that takes as input one or more tensors and that outputs one or more tensors.***
 
-Different type of the layers are appropriate for different tensor formats and different types of data processing. 
+Different types of the layers are appropriate for different tensor formats and different types of data processing. 
 
-Vector data, stored in 2D tensors of shape (samples, features), is ussualy processed by densely connected layers, also called fully connected or dense layers (the Dense class in Keras). 
+Vector data, stored in 2D tensors of shape (samples, features), is ussualy processed by densely connected layers, also called fully connected or dense layers (the ***Dense*** class in Keras). 
 
-Image data, stored in 4D tensors, is usually processed by 2D convolution layers (Conv2D).
+Image data, stored in 4D tensors, is usually processed by 2D convolution layers (***Conv2D***).
 
-Sequence data, stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an LSTM layer.
+Sequence data, stored in 3D tensors of shape (samples, timesteps, features), is typically processed by recurrent layers such as an ***LSTM*** layer.
 
 Layers are in fact as the LEGO bricks where when are combined together forms a deep learning neural network.
 
@@ -576,6 +601,7 @@ Consider the following example:
 
 ```
 from keras import layers
+
 layer = layers.Dense(16, input_shape=(784,))
 ```
 
@@ -589,13 +615,14 @@ match the shape of the incoming layer. For instance, suppose you write the follo
 ```
 from keras import models
 from keras import layers
+
 model = models.Sequential()
 model.add(layers.Dense(16, input_shape=(784,)))
 model.add(layers.Dense(16))
 ```
-The second layer didn’t receive an input shape argumen, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
+The second layer didn’t receive an input shape argument, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
 
-#### Layers
+#### <a id="43"></a>Layers
 
 Keras Sequential API implements a lot of layers which can be used for different types of neural network(MlP, CNN, LSTM, etc.). Commonly used layers are:
  * Core Layers
@@ -621,13 +648,13 @@ Keras Sequential API implements a lot of layers which can be used for different 
 
 Complete list of the implemented layers is described in [Keras documentation](https://keras.io/layers/about-keras-layers/).
 
-#### Activation functions
+#### <a id="44"></a>Activation functions
 
-Keras impements neurons activation functions as well. Activations can either be used through an Activation layer, or through the activation argument supported by all forward layers.
-
-from keras.layers import Activation, Dense
+Keras impements neurons activation functions. Activations can either be used through an Activation layer, or through the activation argument supported by all forward layers.
 
 ```
+from keras.layers import Activation, Dense
+
 model.add(Dense(64))
 model.add(Activation('tanh'))
 ```
@@ -653,7 +680,7 @@ Available [activations functions](https://keras.io/activations/) are:
 
  Activation function decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it. The purpose of the activation function is to introduce non-linearity into the output of a neuron.
 
-#### How to Choose Activation Function 
+#### <a id="45"></a>How to Choose Activation Function 
 
 Both sigmoid and tanh functions are not suitable for hidden layers because if z is very large or very small, the slope of the function becomes very small which slows down the gradient descent which can be visualized in the below video. 
 
@@ -665,7 +692,7 @@ For a multyclass classification softmax activation function is commonly used.
 
 For non-classification problems such as prediction of housing prices, we shall use linear activation function at the output layer only.
 
-#### Initializers
+#### <a id="46"></a>Initializers
 
 Initializations define the way to set the initial random weights of Keras layers.
 
@@ -695,7 +722,7 @@ The following built-in [initializers](https://keras.io/initializers/) are availa
  * lecun_normal
  * he_uniform
 
-#### Compilations
+#### <a id="47"></a>Compilations
 
 Once model is defined, and before we start with training, we need to the configure learning process. Again Keras implements "hard part" for us, so method ***compile*** is used for configuration of the learning process. Method receives 3 arguments:
 
@@ -722,7 +749,7 @@ model.compile(optimizer='rmsprop',
 
 ```
 
-#### Optimizers
+#### <a id="48"></a>Optimizers
 
 During the training process, we tweak model parameters(weights) and trying to minimize that loss function, in order to make predictions as accurate as it is possible. 
 
@@ -744,7 +771,7 @@ In choosing an optimizer it is important to consider is the network depth, the t
 You are free to experiment, but as a hint consider SGD for shallow networks, and either Adam or RMSProp for deepnets.
 
  
-#### Loss functions
+#### <a id="49"></a>Loss functions
 
 Loss function is simple method used during training in order to see how well our neural networks models dataset. 
 
@@ -766,7 +793,7 @@ Below is a table where you can find a hints how to choose loss and last layer ac
 
 
 
-#### Training
+#### <a id="410"></a>Training
 
 Model training is executed using ***fit*** function. 
 
@@ -784,7 +811,7 @@ A minimal example of fitting a network is:
 model.fit(X, Y, batch_size = 1, epochs = 500)
 ```
 
-#### Evaluate
+#### <a id="411"></a>Evaluate
 
 Once the model is trained, it can be evaluated.
 
@@ -800,7 +827,7 @@ For example, for a model compiled with the accuracy metric, we could evaluate it
 model.evaluate(X, Y)
 ```
 
-#### Predict
+#### <a id="412"></a>Predict
 
 Finally, once we are satisfied with the performance of our fit model, we can use that model to make predictions on new data.
 
@@ -818,7 +845,7 @@ For a binary classification problem, the predictions may be an array of probabil
 
 For a multiclass classification problem, the results may be in the form of an array of probabilities (assuming a one hot encoded output variable) that may need to be converted to a single class output prediction using the argmax function.
 
-#### Summary
+#### <a id="413"></a>Summary
 
 Keras provides all needed functionality, to cover whole process, from defining neural network, training, evaluating and prediciting until we are satisfied with accuracy of our neural network.
 
@@ -831,8 +858,7 @@ In a next chapter we will show the whole process, how we can for concrete proble
 
 
 The MNIST (“NIST” stands for National Institute of Standards and Technology while the “M”
-stands for “modified” since data has been preprocessed to reduce any burden on computer vision
-processing and focus solely on the task of digit recognition) dataset is one of the most studied
+stands for “modified”) dataset is one of the most studied
 datasets in the computer vision and machine learning literature.
 
 The goal of dataset is to classify the handwritten digits from 0 to 9. 
@@ -841,6 +867,22 @@ MNIST itself consists of 60,000 training images and 10,000 testing images. Each 
 
 All digits are placed on a black background with the foreground being white and shades of gray. Given these raw pixel intensities,
 our goal is to train a neural network to correctly classify the digits.
+
+TODO show an image from data set
+
+#### A quick note on **image_data_format**
+
+Before we start, be aware that using TensorFlow, images are represented as NumPy arrays with the shape ***(height, width, depth)***, 
+where the depth is the number of channels in the image.
+
+If you are using Theano, images are instead assumed to be represented as ***(depth, height, width)***.
+
+This little difference is the source of a lot of headaches when using Keras.
+So, when your model is working with images and if you are getting strange results when using 
+Keras(or an error message related to the shape of a given tensor) you should:
+
+ * Check your back-end
+ * Ensure your image dimension ordering matches your back-end
 
 #### Load Data 
 
