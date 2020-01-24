@@ -20,7 +20,7 @@
   * [Configuring Keras](#313)
 * [Develop Your First Neural Network with Keras, XOR gate](#32)
   * [Experiment](#321)
-* [Multi Layer Perceptrons](#33)
+* [Customer Churn Prediction with Multi Layer Perceptrons](#33)
   * [Load data](#331)
   * [Prepare data](#332)
   * [Define Model](#333)
@@ -295,7 +295,7 @@ python xor.py
 
 and check results.
 
-## <a id="33"></a>Multi Layer Perceptrons
+## <a id="33"></a>Customer Churn Prediction with Multi Layer Perceptrons
 
 Now we will show more realistic example which can be solved using Multi Layer Perceptrons
 
