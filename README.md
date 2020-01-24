@@ -859,23 +859,24 @@ In addition to mentioned functionality, Keras offers more functionality which ar
 In a next chapter we will show the whole process, how we can for concrete problem, develop a model in order to achieve best possible accuracy. We will start with simple model, then we will build new more advanced models applying regularization tricks in order to end with decent accuracy of the model.
 
 
-## <a id="41"></a> MNIST Handwritten Digits classifier
+# <a id="51"></a> Model Optimization
 
+## <a id="511"></a> MNIST Handwritten Digits classifier
 
 The MNIST (“NIST” stands for National Institute of Standards and Technology while the “M”
-stands for “modified”) dataset is one of the most studied
-datasets in the computer vision and machine learning literature.
+stands for “modified”) dataset is one of the most studied datasets in the computer vision and machine learning literature.
 
 The goal of dataset is to classify the handwritten digits from 0 to 9. 
 
-MNIST itself consists of 60,000 training images and 10,000 testing images. Each image is represented as 784 dim vector, corresponding to the 28x28 grayscale pixel for each image. Grayscale pixel intensities are unsigned integers, falling into the range [0;255]. 
+MNIST itself consists of 60,000 training images and 10,000 testing images. Each image is represented as 784 dim vector, corresponding to the 28x28 grayscale pixel for each image. 
+Grayscale pixel intensities are unsigned integers, falling into the range [0;255]. 
 
 All digits are placed on a black background with the foreground being white and shades of gray. Given these raw pixel intensities,
 our goal is to train a neural network to correctly classify the digits.
 
 TODO show an image from data set
 
-#### A quick note on **image_data_format**
+### <a id="5111"></a> A quick note on **image_data_format**
 
 Before we start, be aware that using TensorFlow, images are represented as NumPy arrays with the shape ***(height, width, depth)***, 
 where the depth is the number of channels in the image.
@@ -889,7 +890,7 @@ Keras(or an error message related to the shape of a given tensor) you should:
  * Check your back-end
  * Ensure your image dimension ordering matches your back-end
 
-#### Load Data 
+### <a id="5112"></a>Load MNIST Dataset
 
 Dataset can be fetched using keras, as follows:
 
@@ -898,7 +899,8 @@ from keras.datasets import mnist
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 ```
 
-Inputs training images(variable train_images) has shape (60000, 28, 28), while test images(variable test_images) has shape (10000, 28, 28). Train labels(variable train_labels) has shape (10000, 10), while test labels(variable test_labels) has shape (10000, 10).
+Inputs training images(variable train_images) has shape (60000, 28, 28), while test images(variable test_images) has shape (10000, 28, 28). 
+Train labels(variable train_labels) has shape (10000, 10), while test labels(variable test_labels) has shape (10000, 10).
 
 For a multilayer perceptron inputs will be reshaped from 28 x 28 matrix to 784 vector.
 
@@ -926,9 +928,9 @@ trainLabelsOneHot = to_categorical(train_labels)
 testLabelsOneHot = to_categorical(test_labels)
 ```
 
-#### Define & train Model, Multy Layer Perceptron(one layer) 
+## <a id="512"></a> Define & train Model, Multy Layer Perceptron(one layer) 
 
-After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron:
+After dataset has been loaded and prepared, we will define model. Let's start with simple multy layer perceptron with following properties:
 
  * input layer   
  * hidden layer with 512 neurons, relu as activation function   
@@ -942,7 +944,7 @@ model.add(Dense(512, activation='relu', input_shape=(784,)))
 model.add(Dense(10, activation='softmax'))
 ```
 
-Keras offers handy method modelsumary() which prints summary of the model, so for model summary looks as follows:
+Keras offers handy method modelsumary() which prints summary of the model, so summary of our model looks as follows:
 
 _________________________________________________________________
 Layer (type)                 Output Shape              Param 
@@ -956,7 +958,8 @@ Trainable params: 407,050
 Non-trainable params: 0  
 _________________________________________________________________
 
-Adam optimizer will be used(feel free to play with another optimizer like rmsprop), due to 10 output label, loss function will be categorical_crossentropy.
+***Adam*** optimizer will be used(feel free to play with another optimizer like ***rmsprop***).
+Due to 10 outputs label, loss function will be ***categorical_crossentropy***.
 
 Compile function will look like:
 
@@ -964,7 +967,11 @@ Compile function will look like:
 model.compile(optimizer = 'adam', loss= 'categorical_crossentropy',  metrics=['accuracy'])
 ```
 
-We will train our model with 60 epochs, batch_size will be 256.
+### <a id="5121"></a> Callbacks
+
+TODO ... describe callbacks 
+
+We will train our model with 60 epochs, with ***batch_size*** 256.
 Keras fit() function accepts [callbacks](https://keras.io/callbacks/), so for training we will define two callbacks:
 
  * TimeCallback   
@@ -1029,7 +1036,7 @@ Epoch 60/60
 60000/60000 [==============================] - 3s 55us/step - loss: 1.0969e-04 - acc: 1.0000 - val_loss: 0.0777 - val_acc: 0.9831
 ```
 
-#### Evalute trained model
+### <a id="5122"></a> Evalute trained model
 
 Now we can evaluate trained model:
 
@@ -1047,7 +1054,7 @@ prediction = model.predict(test_data, hyper_params.batch_size)
 
 Method predict() returns numpy array with 10 values(last layer in our model is fully connected layer with 10 neurons), where  each element holds probability for each digit(0-9).
 
-... classification report ...
+TODO ... classification report ...
 
 
 
@@ -1055,10 +1062,22 @@ Our first loop is completed, ModelCheckpoint callback will save model, so we can
 
 So, what now, are we are satified with results, should we consider to try to improve a model ?
 
-One way would be to change some hyperpameters in our model, like new optimizer(rsmprop), bacth size, number of epochs, activation function in hidden layers, number of neurons in hidden laye, extend a model with new layers.
-another way would be to even develop completely new model.
+One way would be to change some of the hyperpameters in existing model, e.g.
+ * new optimizer(for example rsmprop)
+ * bacth size
+ * number of epochs
+ * activation function in hidden layers
+ * number of neurons in hidden layers
+ * 
+or to extend a model with new layers or even develop completely new model.
 
-If we train a model with any mentiond change comparing to previous one, we should be able to compare new results with previous one. Therfore we will use history object which is returned by fit() method and using Python matplotlib library draw graphs which willbe stored for analisys.
+
+### <a id="5123"></a> Understand Model Behavior During Training By Plotting History
+
+TODO ... better explanation
+
+If we train a model with change of the hyperparameter, we should be able to compare new results with previous one. 
+Therfore we will use history object which is returned by ***fit()*** method and using Python ***matplotlib** library draw graphs which will be stored for analisys.
 
 You can see part of the code bellow, but for full implementetion please, check methods drawGraphByType(), drawAccLossGraph(), drawTimes() in module./src/mnist/utils.py
 ```
@@ -1074,7 +1093,13 @@ plt.legend(['Training ' + str(type) + ' : ' +  str(history.history[type][epochs-
 
 ```
 
-So for our very first model on a MNIST dataset we have following graphs:
+Model can be trained with command:
+
+```
+python mnist.py -m mlp_one_layer
+```
+
+So for our very first model after 60 epochs will have on a MNIST dataset we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_acc_e60.png "MNIST One Layer Perceptron - accuracy after 60 epochs")
 
@@ -1083,11 +1108,13 @@ So for our very first model on a MNIST dataset we have following graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_one_layer_times_e_60.png "MNIST One Layer Perceptron - times for each epoch")
 
-Now let's see how we can improve model.
+Are we satified with the results ?
+Can we can improve model ?
+Let's extend our model with one additional hidden layer.
 
-#### Multy Layer Perceptron with two hidden layers
+## <a id="513"></a> Multy Layer Perceptron with two hidden layers
 
-Now we will add second layer, so our model will have:
+Now we will add hidden second layer, so our model will have:
 
  * input layer   
  * hidden layer with 512 neurons, relu as activation function   
@@ -1144,7 +1171,8 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
-#### Convolutional Neuarl Network
+
+## Convolutional Neuarl Network
 
 Now we will try to build simple Convolutional neural network(CNN). Details about CNN is explained here.
 
