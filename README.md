@@ -75,17 +75,18 @@
 #### Visualizing Neural Networks
 * [Introduction](#71)
 
-#### CNN
+#### Convolutional Neural Networks
+
 * [Introduction](#81)
-What are Convolutional Neural Networks and what motives their use?
-The History of Convolutional Neural Networks
-Building blocks of Convolutional Neural Networks
-	Convolutional layers
-	Pooling layers
-	Fully connected layers
-	Conclusion
-* LeNet MNIST
-* [Transfer learning](#88)
+* [What are Convolutional Neural Networks and what motives their use?](#82)
+* [The History of Convolutional Neural Networks](#83)
+* [Building blocks of Convolutional Neural Networks](#84)
+  * [Convolutional layers](#841)
+  * [Pooling layers](#842)
+  * [Fully connected layers](#843)
+* [Summary](#85)
+* [LeNet MNIST](#86)
+* [Transfer learning](#87)
 
 #### RNN
 * [Introduction](#91)
@@ -1588,6 +1589,157 @@ TODO ...
 ## <a id="517"></a> Summary
 
 TODO ...
+
+# Convolutional Neural Networks
+
+## <a id="81"></a> Introduction
+
+In the past, artificial neural networks (ANNs) have proven to be extremely useful for solving problems such as
+classification, regression, function estimation and dimensionality reduction. However, it turned out that regular
+neural networks were not able to achieve high performances when considering imagery input data, which is the case
+when dealing with computer vision problems. 
+
+Convolutional Neural Networks (CNNs) are a special type of neural networks which are especially suited to analyze such imagery input data. This article will provide an overview of the
+history of Convolutional Neural Networks, their working principles, and the different building blocks that they are constituted of.
+
+## <a id="82"></a>What are Convolutional Neural Networks and what motives their use?
+
+Classical Multilayer Perceptrons (MLPs) are often fully connected, meaning that every neuron in a particular layer is
+connected to all neurons in the previous and subsequent layer. However, such highly connected layers make the
+network prone to overfitting because of the many interconnection weights. In addition, the network size would
+increase exponentially as the dimensionality of the input data increases. Images are known to be of very high
+dimensionality, for example: a simple black-and-white image of 100x100 pixels has a dimensionality of 10 000. This
+dimensionality triples when we consider colored RGB images, which is usually the case when dealing with machine
+learning applications. In addition, imagery data needs to be flattened into a 1-dimensional vector when inputted in
+a multilayer perceptron. However, flattening the data causes spatial information within the image to get lost,
+meaning that MLPs treat pixels that are located close together in the same way as pixels that are located further
+away from each other.
+
+Because of these limitations, classical MPLs are usually avoided when dealing with imagery data. Ideally, one needs
+a way to leverage the spatial correlation of the image pixels such that the network can detect different features
+within the image without causing the network to become too large. This can be achieved by making use of a locally
+connected network, which is exactly what a convolutional neural network is.
+
+Just as with multilayer-perceptrons, convolutional neural networks consist of different layers that are connected
+together. However, in Convolutional Neural Networks, these layers are not fully connected but they are made up of
+different filters which are slided over the image. In essence, these filters are a set of cube-shaped weights which are
+applied to the image with the purpose of learning the features within it. The different layers within a convolutional
+neural network are constituted out of different filters, each with their own specific purpose. The most common layers
+that are used within a CNN are the convolutional layer (hence the name Convolutional neural network), the maxpooling layer and the fully connected layer.
+
+## <a id="83"></a>The History of Convolutional Neural Networks
+
+Just like regular neural networks, the concept of convolutional neural networks finds its origin in the human biological
+brain. In the early 60’s, it was discovered that the human visual cortex consisted of so-called ‘simple neurons’ and
+‘complex neurons’. Both neuron types respond to visual stimuli (i.e., object edges) that are detected in their
+individual receptive fields and the combined receptive fields of all neurons cover the whole visual field. However, it
+was shown that simple cells react maximally to object edges that have a particular orientation and position within
+their receptive field, whereas complex cells are insensitive to the stimuli’s exact position within the receptive field,
+often referred to as ‘spatial invariance’. Complex cells achieve this spatial invariance by summing the output of
+several simple neurons which have the same stimuli orientations but correspond to different receptive fields. This 
+theory, being that complex detectors can be created by summing several simple detectors, is what gave rise to the
+development of convolutional neural networks.
+
+The first modern CNN was developed by Yann LeCun in the 1990s, who would later receive the Turing award in 2018
+for his contributions in the field of deep learning. LeCun and his team trained a convolutional neural network with
+the aim of recognizing hand-written numbers in images. For the purpose of training, he used the MNIST data set
+which contains over 50.000 28x28 pixel images of hand-written digits and which is commonly used for training and
+testing computer vision applications within the field of machine learning. His research resulted in the development
+of ‘LeNet-5’, which is a 7-layered CNN able to recognize hand-written numbers and which was implemented by
+several banking institutions with the purpose of detecting the digits on images of bank cheques.
+The creation of LeNet, along with the increased use of graphics processing units (GPUs) which allowed faster CNN
+implementations, stirred up the research being done in the field of CNNs during the early 2000s. The real
+breakthrough of CNNs came with the 2012 ImageNet Challenge, which is an annual computer vision competition in
+which teams compete to create the best image classifier using the ImageNet data set. This data set consists of more
+than 14 million labeled images from 20.000 categories including animals, vehicles and music instruments.
+The winning classifier of the 2012 edition, developed by Alex Krizhevsky, was a large Convolutional Neural Network
+called ‘AlexNet’ which achieved the best results ever reported on the ImageNet data set. This achievement drastically
+increased the interests in CNNs within the machine learning community and, from then on, the use of Convolutional
+Neural Networks has dominated the ImageNet Challenge.
+
+CNNs have enjoyed widespread interest due to their performance in the ImageNet challenge and have since been
+used for many computer vision applications. They have proven to perform extraordinary well on other large data sets
+such as the CIFAR-100, VisualGenome and MNIST data set, all of which are widely used data sets used for
+performance comparison within the field of computer vision. In addition, CNNs have been used extensively for the
+purpose of performing facial recognition, analyzing medical images and perform video analysis.
+
+At last, CNNs have also turned out to be useful in other fields than that of computer vision. For example, the use of
+CNNs have been explored in the field of Natural Language Processing (NLP), where they have proven to be effective
+for standard NLP tasks such as sentence modeling and semantic parsing. Also, CNNs have been implemented for the
+purpose of predicting the interactions between different biological proteins and molecules, allowing them to be used
+for drug discovery and identifying potential treatment hazards.
+
+## <a id="84"></a>Building blocks of Convolutional Neural Networks
+
+As discussed earlier, convolutional neural networks are constituted out of different layers. Each of these layers
+consists of multiple filters and has its own specific purpose. The purpose of training a CNN is to learn the values of
+the filter weights, allowing the network to learn the relevant features within the image data. In what follows, the
+working principles of the three most common layers (being the convolutional layer, the max-pooling layer and the
+fully connected layer) will be discussed.
+
+
+### <a id="841"></a>Convolutional layers
+
+The convolutional layer consists of a set of cube-shaped filters which are convolved with the input data (or the output
+data from the previous layer when the convolutional layer is situated deeper in the network). Each of these filters
+has a small width and height (i.e., common heights are 3, 5 or 7 pixels) and a depth that equals the depth of the input
+image. This means that the depth of the convolutional filters is equal to 1 when dealing with black-and-white images
+and equal to 3 when dealing with RBG (color) images. The different convolutional filters within the layer are slided
+over the input data and compute the dot product of the input and the filter, resulting in a so-called convolved feature
+map. Note that the width and height of this feature map is lower than that of the input data and depends on the
+filter size and the number of pixels the filter is moved every step. However, the depth of the feature map is always
+equal to that of the convolutional layer.
+
+The objective of a convolutional layer is to extract features from the input data. CNNs are not limited to one
+convolutional layer and, usually, multiple convolutional layers are used within the same network. This allows the
+network to learn increasingly more complex feature as the data propagates through the network. For example, the
+first convolutional layer is responsible for detecting low-level features (edges and color), whereas subsequent layer
+capture higher-level features such as general shapes or objects. This allows the network to gain an increasingly better
+understanding of the images in the data set.
+	
+### <a id="842"></a>Pooling layers
+	
+Pooling layers are periodically inserted in convolutional networks and are responsible for reducing the spatial size of
+the convolved features. The main reason for doing this is to decrease the computational power required to process
+the data by means dimensionality reduction.
+In general, two types of pooling layers are used, being max pooling layers and average pooling layers. Again, these
+layers consist of filters that are slided over the image, resulting in an output with reduced width and height and with
+a depth that is equal to that of the input data. The difference between max pooling layers and average pooling layers
+is that the output of max pooling layers depends on the maximum pixel values found during the sliding of the filters,
+whereas average pooling layers make use of the average pixel values.
+
+### <a id="843"></a>Fully connected layers
+
+Normally, a convolutional neural network consists of a series of convolutional layers and pooling layers which are
+able to detect increasingly more complex features within the input image. However, to make the network practically
+applicable, the resulting features from these layers need to be interpreted. This is what is being done by the fully
+connected layers.
+Fully connected layers are added to the end of the network and take as input the flattened vector-representation of
+the convolutional and pooling layers. In essence, the fully connected layers represent a regular fully connected neural
+network which is trained with the purpose of classifying the object in the input image. Thus, instead of being trained
+on the input image directly (as would be the case in classical Multilayer Perceptrons), the network is trained on the
+features resulting from the different layers of the convolutional neural network, allowing it to achieve much higher
+performance. The output of the fully connected layer is a one-dimensional vector which represents the probabilities
+of the input image belonging to a certain class.
+
+An example of a possible CNN architecture with two convolutional layers, two max-pooling layers and a fully
+connected layers is represented in the image below. 
+	
+## <a id="85"></a>Summary
+
+Convolutional neural networks have revolutionized the field of computer vision, allowing a machine to mimic the
+biological processes that humans use to perceive and interpret imagery data. Applications such as face recognition
+and object detection have shifted to the use of convolutional neural networks, and many applications are still to be
+discovered. As the theoretical insights in this type of deep neural networks advances, so will the capacity of
+computers and machines to perceive their surroundings and to acquire true, human-like sight.
+
+## <a id="86"></a>LeNet MNIST
+
+## <a id="87"></a>Transfer learning
+
+
+
+
 
 ......
 
