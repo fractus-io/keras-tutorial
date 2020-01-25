@@ -535,7 +535,7 @@ and check the results.
 
 
 
-### <a id="34"></a>Summary
+## <a id="34"></a>Summary
 
 As you can see, during a process of finding appropriate neural network for specific problem, we need to make a lot of 
 decision and continuously repeat following steps: 
