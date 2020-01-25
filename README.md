@@ -1172,9 +1172,10 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
 
-## Convolutional Neuarl Network
+## <a id="513"></a>Convolutional Neural Network
 
-Now we will try to build simple Convolutional neural network(CNN). Details about CNN is explained here.
+Now we will try to build simple Convolutional neural network(CNN). 
+Details about CNN is explained here TODO ...
 
 Model will have:
 
@@ -1189,8 +1190,9 @@ Model will have:
  * fully connected layer with 64 neurons, relu as activation function  
  * output layer with 10 neurons(due to 10 output labels) softmax as activation function   
  
-```
+Keras code for convoluonal model:
 
+```
 model = Sequential()
 model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1 )))
 model.add(MaxPooling2D((2, 2)))
@@ -1240,7 +1242,7 @@ python mnist.py -m conv_net
 
 ...
 
-After 60 epochs accuracy on accuracy on test images(val_acc) is 99.34%, which is again improvement in comparism to MLP models.
+After 60 epochs accuracy on test images(val_acc) is 99.34%, which is improvement in comparism to both MLP models.
 
 Graphs:
 
@@ -1256,7 +1258,7 @@ Please note that to training time simple CNN is almost 2.5 times longer comparin
 
 
 
-### <a id="41"></a> Model Optimization
+## <a id="514"></a> Techniques to reduce Overfitting
 
 By introducing simple CNN accuracy on test data after 60 epochs is 99,34%, accuracy on a training data is 100%. 
 Looks very well so far, but do we have a problem, why we have difference between training and test data set ?
@@ -1267,14 +1269,17 @@ If we closely check accuracy graph on simple CNN, we see gap between training an
 
 The gap is example of the ***Overfitting***.
 
-Overfitting occurs when you achieve a good fit of your model on the training data, while it does not generalize well on new, unseen data. In other words, the model learned patterns specific to the training data, which are irrelevant in other data.
+Overfitting occurs when you achieve a good fit of your model on the training data, but model does not generalize well on new, unseen data. 
+In other words, the model learned patterns specific to the training data, which are irrelevant to unseen data.
 
-Regularization technique is used in order to reduce overffiting.
-Regularization makes slight modifications to the model such that the model generalizes better. This in turn improves the model’s performance on the unseen data as well.
+In order to reduce overffiting, the technique called regularization is used.
+Regularization makes slight modifications to the model such that the model generalizes better. 
 
-Keras provides handy support for regularitaion.
+This concept improves model’s performance on the unseen.
 
-#### L2 & L1 regularization
+Keras provides support for regularitaion.
+
+### <a id="5141"></a> L2 & L1 regularization
 
 L1 and L2 are the most common types of regularization. These update the general cost function by adding another term known as the regularization term.
 
@@ -1282,18 +1287,19 @@ L1 and L2 are the most common types of regularization. These update the general 
 Cost function = Loss (say, binary cross entropy) + Regularization term
 ```
 
-Due to the addition of this regularization term, the values of weight matrices decrease because it assumes that a neural network with smaller weight matrices leads to simpler models. Therefore, it will also reduce overfitting to quite an extent.
+Due to the addition of this regularization term, the values of weight matrices decrease because it assumes that a neural network with smaller weight matrices leads to simpler models. 
+Therefore, it will also reduce overfitting to quite an extent.
 
 However, this regularization term differs in L1 and L2.
 
 L2 regularization is also known as weight decay as it forces the weights to decay towards zero (but not exactly zero).
 
 In L1, we penalize the absolute value of the weights. Unlike L2, the weights may be reduced to zero here. 
-Hence, LQ it is very useful when we are trying to compress  the model. 
+
 
 In Keras, we can directly apply regularization to any layer using the regularizers.
 
-Below is the where we extended simple CNN with L1 and L2 regularizers:
+Below is code where we extended simple CNN with L1 and L2 regularizers:
 
 L1
 
@@ -1372,9 +1378,11 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_l2_times_e_60.png "CNN L1 - times for each epoch")
 
-#### Batch Normalization
+TODO ... conclusion
 
-...
+### <a id="5142"></a> Batch Normalization
+
+TODO ... describe batch norm...
 
 ```
 
@@ -1414,24 +1422,19 @@ Graphs:
 
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_batch_norm_times_e_60.png "CNN Batch Norm - times for each epoch")
 
+TODO ... conclusion
 
-#### Dropouts
+### <a id="5143"></a> Dropouts
 
 This is the one of the most interesting types of regularization techniques. It produces very good results and is consequently the most frequently used regularization technique in the field of deep learning.
 
-So what does dropout do? At every iteration, it randomly selects some nerons fromneural network and removes them along with all of their incoming and outgoing connections as shown below.
+So what does dropout do? At every iteration, it randomly selects nerons from neural network and removes them along with all of their incoming and outgoing connections as shown below.
 
-...
+Dropout can be applied to both the hidden layers as well as the input layers.
 
-So each iteration has a different set of nodes and this results in a different set of outputs. It can also be thought of as an ensemble technique in machine learning.
+In Keras, we can implement dropout using the keras core layer. Below is the python code where dropout is applied on multy layer perceptron and on CNN:
 
-Ensemble models usually perform better than a single model as they capture more randomness. Similarly, dropout also performs better than a normal neural network model.
-
-The probability of choosing how many nodes should be dropped is the hyperparameter of the dropout function. Dropout can be applied to both the hidden layers as well as the input layers.
-
-In Keras, we can implement dropout using the keras core layer. Below is the python code for it multy layer perceptron and for CNN:
-
-MLP
+* MLP
 
 
 ```
@@ -1446,6 +1449,8 @@ model.add(Dense(10, activation='softmax'))
 ```
 
 Summary of the model:
+
+TODO ...
 
 Model can be trained with command:
 
@@ -1467,7 +1472,7 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_dropout_times_e_60.png "MNIST Two Layers Perceptron Dropout - times for each epoch")
 
 
-CNN
+* CNN
 
 ```
 
@@ -1487,6 +1492,8 @@ model.add(Dense(10, activation='softmax'))
 ```
 
 Summary of the model:
+
+TODO ...
 
 Model can be trained with command:
 
@@ -1508,25 +1515,29 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/conv_net_dropout_times_e_60.png "CNN Dropout - times for each epoch")
 
 
+TODO ... conclusion
 
-#### Data Augmentation
+### <a id="5144"></a> Data Augmentation
 
-The simplest way to reduce overfitting is to increase the size of the training data. In machine learning, we were not able to increase the size of training data as the labeled data was too costly.
 
-But, now let’s consider we are dealing with images. In this case, there are a few ways of increasing the size of the training data – rotating the image, flipping, scaling, shifting, etc. In the below image, some transformation has been done on the handwritten digits dataset.
+Another powerfull technique to reduce overfitting is to increase the size of the training data. 
+Since our dataset is based on imagesd, we can increase the size of the training data by rotating, flipping, scaling, shifting images. 
+This technique is known as ***data augmentation***. 
 
-This technique is known as data augmentation. This usually provides a big leap in improving the accuracy of the model. It can be considered as a mandatory trick in order to improve our predictions.
+Data augmentation is considered as a mandatory trick in order to improve our predictions.
 
-In keras, we can perform all of these transformations using ImageDataGenerator. It has a big list of arguments which you you can use to pre-process your training data.
+In Keras, we can perform all of these transformations using ImageDataGenerator. It has a big list of arguments which you you can use to pre-process your training data.
 
 Below is the sample code to implement it.
 
 
-#### Data Augmentation
+TODO ... code, graphs, conclusion
 
 
+## <a id="515"></a> Summary
 
 
+......
 
 #### Early stopping
 
