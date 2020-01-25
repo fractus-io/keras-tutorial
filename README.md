@@ -1725,7 +1725,8 @@ of the input image belonging to a certain class.
 An example of a possible CNN architecture with two convolutional layers, two max-pooling layers and a fully
 connected layers is represented in the image below. 
 
-![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/cnn.jpgg "CNN architecure example")
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/cnn.jpg "CNN architecure example")
+
 
 ## <a id="85"></a>Summary
 
