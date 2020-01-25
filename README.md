@@ -73,12 +73,22 @@
 * [Summary](#66)
 
 #### Visualizing Neural Networks
+* [Introduction](#71)
 
 #### CNN
-	...
-	#### Transfer learning	
-#### RNN
+* [Introduction](#81)
+What are Convolutional Neural Networks and what motives their use?
+The History of Convolutional Neural Networks
+Building blocks of Convolutional Neural Networks
+	Convolutional layers
+	Pooling layers
+	Fully connected layers
+	Conclusion
+* LeNet MNIST
+* [Transfer learning](#88)
 
+#### RNN
+* [Introduction](#91)
 
 
 
@@ -88,6 +98,7 @@
 * Model Architectures
 * Train the Model
 * Serialize the Model
+* undefitting ?
 
 #### Model Optimization
 * Understand Model Behavior During Training
