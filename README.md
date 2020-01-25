@@ -64,6 +64,16 @@
 * [Experiment](#516)  
 * [Summary](#517)
 
+#### Model Serialization
+* [Introduction](#61)
+* [Save model](#62)
+* [Load model](#63)
+* [Expose model via REST API](#64)
+* [Experimet](#65)
+* [Summary](#66)
+
+
+
 ....
 
 * Shallow and Deep Neural Networks
