@@ -33,17 +33,18 @@
 
 #### Deep Learning Models
 * [Keras Models](#41)
-    * [Layers](#43)
-    * [Activation functions](#44)
-    * [How to Choose Activation Function](#45)
-    * [Initializers](#46)
-    * [Compilations](#47)
-    * [Optimizers](#48)
-    * [Loss functions](#49)
-    * [Training](#410)
-    * [Evaluate](#411)
-    * [Predict](#412)
-    * [Summary](#413)
+    * [Sequential API](#412)
+    * [Layers](#413)
+    * [Activation functions](#414)
+    * [How to Choose Activation Function](#415)
+    * [Initializers](#416)
+    * [Compilations](#417)
+    * [Optimizers](#418)
+    * [Loss functions](#419)
+    * [Training](#4110)
+    * [Evaluate](#4111)
+    * [Predict](#4112)
+ * [Summary](#42)
 
 
 ....
@@ -581,7 +582,7 @@ It allows you to define multiple input or output models as well as models that s
 
 Sequential API is simplier and it will be used in this chapter.
 
-### <a id="42"></a>Sequential API
+### <a id="412"></a>Sequential API
 
 The easiest way of creating a model in Keras is by using the Sequential API, which lets you stack one layer after the other. 
 The problem with the sequential API is that it doesn’t allow models to have multiple inputs or outputs, which are needed for some problems.
@@ -627,7 +628,7 @@ model.add(layers.Dense(16))
 ```
 The second layer didn’t receive an input shape argument, instead Keras will automatically inferred its input shape as being the output shape of the layer that came before.
 
-### <a id="43"></a>Layers
+### <a id="413"></a>Layers
 
 Keras Sequential API implements a lot of layers which can be used for different types of neural network(MlP, CNN, LSTM, etc.). Commonly used layers are:
  * Core Layers
@@ -653,7 +654,7 @@ Keras Sequential API implements a lot of layers which can be used for different 
 
 Complete list of the implemented layers is described in [Keras documentation](https://keras.io/layers/about-keras-layers/).
 
-### <a id="44"></a>Activation functions
+### <a id="414"></a>Activation functions
 
 Keras impements neurons activation functions. Activations can either be used through an Activation layer, or through the activation argument supported by all forward layers.
 
@@ -685,7 +686,7 @@ Available [activations functions](https://keras.io/activations/) are:
 
  Activation function decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it. The purpose of the activation function is to introduce non-linearity into the output of a neuron.
 
-### <a id="45"></a>How to Choose Activation Function 
+### <a id="415"></a>How to Choose Activation Function 
 
 Both sigmoid and tanh functions are not suitable for hidden layers because if z is very large or very small, the slope of the function becomes very small which slows down the gradient descent which can be visualized in the below video. 
 
@@ -697,7 +698,7 @@ For a multyclass classification softmax activation function is commonly used.
 
 For non-classification problems such as prediction of housing prices, we shall use linear activation function at the output layer only.
 
-### <a id="46"></a>Initializers
+### <a id="416"></a>Initializers
 
 Initializations define the way to set the initial random weights of Keras layers.
 
@@ -727,7 +728,7 @@ The following built-in [initializers](https://keras.io/initializers/) are availa
  * lecun_normal
  * he_uniform
 
-### <a id="47"></a>Compilations
+### <a id="417"></a>Compilations
 
 Once model is defined, and before we start with training, we need to the configure learning process. Again Keras implements "hard part" for us, so method ***compile*** is used for configuration of the learning process. Method receives 3 arguments:
 
@@ -754,7 +755,7 @@ model.compile(optimizer='rmsprop',
 
 ```
 
-### <a id="48"></a>Optimizers
+### <a id="418"></a>Optimizers
 
 During the training process, we tweak model parameters(weights) and trying to minimize that loss function, in order to make predictions as accurate as it is possible. 
 
@@ -776,7 +777,7 @@ In choosing an optimizer it is important to consider is the network depth, the t
 You are free to experiment, but as a hint consider SGD for shallow networks, and either Adam or RMSProp for deepnets.
 
  
-### <a id="49"></a>Loss functions
+### <a id="419"></a>Loss functions
 
 Loss function is simple method used during training in order to see how well our neural networks models dataset. 
 
@@ -798,7 +799,7 @@ Below is a table where you can find a hints how to choose loss and last layer ac
 
 
 
-### <a id="410"></a>Training
+### <a id="4110"></a>Training
 
 Model training is executed using ***fit*** function. 
 
@@ -816,7 +817,7 @@ A minimal example of fitting a network is:
 model.fit(X, Y, batch_size = 1, epochs = 500)
 ```
 
-### <a id="411"></a>Evaluate
+### <a id="4111"></a>Evaluate
 
 Once the model is trained, it can be evaluated.
 
@@ -832,7 +833,7 @@ For example, for a model compiled with the accuracy metric, we could evaluate it
 model.evaluate(X, Y)
 ```
 
-### <a id="412"></a>Predict
+### <a id="4112"></a>Predict
 
 Finally, once we are satisfied with the performance of our fit model, we can use that model to make predictions on new data.
 
@@ -850,7 +851,7 @@ For a binary classification problem, the predictions may be an array of probabil
 
 For a multiclass classification problem, the results may be in the form of an array of probabilities (assuming a one hot encoded output variable) that may need to be converted to a single class output prediction using the argmax function.
 
-### <a id="413"></a>Summary
+## <a id="42"></a>Summary
 
 Keras provides all needed functionality, to cover whole process, from defining neural network, training, evaluating and prediciting until we are satisfied with accuracy of our neural network.
 
