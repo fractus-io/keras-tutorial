@@ -74,6 +74,8 @@
 
 #### Visualizing Neural Networks
 * [Introduction](#71)
+* [Visualizing Neural Networks with Keras](#72)
+* [Summary](#73)
 
 #### Convolutional Neural Networks
 
@@ -88,10 +90,16 @@
 * [LeNet MNIST](#86)
 * [Transfer learning](#87)
 
-#### RNN
+#### Recurrent Neural Networks
 * [Introduction](#91)
-
-
+* [The Sequencing Problem](#92)
+* [Recurrent Neural Networks](#93)
+* [A Special Kind of RNNs: Long Short-Term Memory Networks](#94)
+* [Applications of Recurrent Neural Networks](#95)
+  * [Energy Forecasting using Time-series prediction](#951)
+  * [Speech Recognition using Recurrent Neural Networks](#952)
+  * [Recurrent Neural Networks for the purpose of Natural Language Processing (NLP)](#953)
+* [Summary](#96)
 
 ....
 
@@ -1741,6 +1749,139 @@ computers and machines to perceive their surroundings and to acquire true, human
 ## <a id="87"></a>Transfer learning
 
 
+
+
+# Recurrent Neural Networks
+
+## <a id="91"></a> Introduction
+
+
+Artificial Neural Networks are capable of solving a wide range of classification and regression tasks due to the fact
+that they are universal approximators. This means that a feed-forward neural network with a finite number of
+neurons in its hidden layer can approximate any continuous function with a reasonable accuracy. In addition, this
+property can be achieved in a compact way by adding multiple hidden layers to the network, hereby reducing the
+number of neurons needed per hidden layer.
+
+Whereas regular multi-layer perceptrons have many advantages over other predictive algorithms, they do not have
+the capacity to adequately solve all the problems that are posed within a machine learning context. One of the
+problems that has proven to be especially hard to solve for regular neural networks is the sequencing problem.
+However, just like convolutional neural networks have proven to achieve much higher accuracies when dealing with
+imagery data, it is possible to adapt a multi-layer perceptron in such a way so that it is capable of solving the
+sequencing problem. This article will provide an overview of what the sequencing problem is, how neural networks
+can be adapted to solve them, and the for what purpose they can be used.
+
+## <a id="92"></a> The Sequencing Problem
+
+Regular neural networks try to find the concept that allows them to perform a mapping between a list of input data
+and their corresponding target output. In such static problems, the neural network is trained by using several training
+instances without taking into consideration the individual relation between them. In essence, the neural network
+assumes that all instances are independent from each other and rejects the order in which instances are presented
+to it.
+
+However, many machine learning problems require the analyzation of data in which a relation between individual
+training instances can be observed. This is the case when the data that is fed into the network represents a sequence,
+hence the name ‘the sequencing problem’. Many examples can be found which represent such data sequence,
+including day-to-day air temperatures, the daily closing price of an individual stock or the sequence of words that is
+represented by a sentence. From these examples, it is clear to see that valuable information may be hidden in the
+order that instances are represented to the network. To capture this information, more complex networks, with
+reference to regular multi-layer perceptrons, are needed. This encouraged the invention of the type of neural
+networks that is commonly used today for the purpose of dealing with sequential data: Recurrent Neural Networks
+(RNNs).
+
+## <a id="93"></a> Recurrent Neural Networks
+
+Recurrent Neural Networks are a type of neural networks that are specifically designed for the purpose of dealing
+with sequential data. Conceptionally, they do this by introducing so-called feedback loops into the network’s
+architecture, enabling recurrent neural networks to use information from previous calculations in order to determine
+the new output. This property gives recurrent neural networks a memory-like capability which allows them to look
+back a few steps when dealing with sequential data.
+
+As is the case with regular Neural Networks, RNNs are constituted out of three layers which each have their own
+distinct properties and functioning. These layers are the input layer, the hidden layer and the output layer.
+
+1. The Input Layer: The input layer consists out of a set of input neurons which receive the sequential input
+data to be processed.
+
+2. The Hidden Layers: The hidden layers, which are constituted out of a finite number of layers, consist out of
+a set of neuron layers which are heavily interconnected. In regular fully connected neural networks, all
+neurons from a certain layer are connected to all neurons from their adjacent layers. However, the hidden
+layers in recurrent neural networks contain temporal loops which allows them to pass their state to future
+calculations, effectively serving as the network’s memory.
+
+3. The Output Layer: The output layer consists out of a set of output neurons which together form the
+network’s predicted output.
+
+![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/rnn.jpg "RNN example")
+
+The weights of a feedforward neural network can easily be trained with regular backpropagation techniques.
+However, the use of backpropagation is impracticable and inefficient when dealing with recurrent neural networks
+because of the recurrent feedback loops that can be found within them. To solve this problem, a new method had
+to be introduced which allowed to propagate the prediction error back through the network, as is done with regular
+backpropagation. This led to the introduction of Backpropagation Through Time or BPTT.
+
+Backpropagation Through Time operates as regular backpropagation, with the additional requirement that the
+recurrent neural network needs to be unrolled before the technique can be applied. Unrolling of the network is done
+by creating copies of the neurons that are linked to a feedback loop within the network. Neurons that have
+connection weights to themselves (e.g., to create a memory) can, for example, be represented by two neurons with
+the same mathematical properties. The main purpose of performing this unrolling is to create a network that is
+acyclic, allowing backpropagation techniques to be used on it.
+
+However, as the depth (i.e., the number of hidden layers) of the network rises, the effectiveness of backpropagation
+diminishes. This is causes by the so-called vanishing gradient problem: the magnitude of the gradient decreases
+rapidly as it is moved backward through the hidden layers. This results in a situation where neurons that are located
+in the first hidden layers learn much more slowly in comparison to neurons that are located at the back of the
+network. This problem is solved by introducing a special kind of recurrent neural networks: Long Short-Term Memory
+Networks (LSTMs)
+
+## <a id="94"></a> A Special Kind of RNNs: Long Short-Term Memory Networks
+
+Instead of using regular neurons, Long Short-Term Memory networks make us of so-called memory units. These units
+are composed out of three gates: an input gate, an output gate and a forget gate. By regulating these gates, the
+network is capable of remembering certain values for an arbitrary amount of time. In addition, since Long Short-Term
+Memory networks are able to reduce the vanishing gradient problem, they can be used in a deep recurrent network
+architecture. This makes them especially well-suited to be used for complex sequencing tasks such as time-series
+prediction, speech recognition and semantic parsing.
+
+## <a id="95"></a> Applications of Recurrent Neural Networks
+
+Recurrent Neural Networks, and especially Long Short-Term Memory Networks, have proven to be well-suited for
+dealing with complex sequential data. In what follows, an overview will be provided on how recurrent neural
+networks are being used within various industries today.
+
+### <a id="951"></a> Energy Forecasting using Time-series prediction
+
+Time-series Forecasting is the branch within machine learning that focusses on predicting parameter values in the
+future, based on the parameter values that have been observed in previous timepoints. Using data on the market’s
+energy demand during the recent years, recurrent neural networks can be trained in order to provide an estimation
+about the market’s energy demand in future time-points. Since a perfect balance between energy supply and energy
+demand should always be maintained, having knowledge about the near-future energy demand allows providers to
+either increase or decrease production accordingly. This allows energy providers to obtain increased production
+efficiencies because of the reduced risk of over-production and better insights into general market trends.
+
+### <a id="952"></a> Speech Recognition using Recurrent Neural Networks
+
+Speech recognition, commonly referred to as voice recognition, is the ability of a machine to recognize humanspoken languages. The technology enhances human-machine interaction and allows one to communicate with
+machines without the need of touch-based interaction. Since sentences are made up out of a sequence of words,
+recurrent neural networks – which are able to deal with such sequential data – are especially suited for the purpose
+of speech recognition. In addition, the fast computational times of recurrent neural networks allow them to perform
+speech recognition in real-time, further enhancing the level of interaction.
+
+### <a id="953"></a> Recurrent Neural Networks for the purpose of Natural Language Processing (NLP)
+
+Natural language processing is a field of Artificial Intelligence that focusses on language understanding and language
+generation. As discussed earlier, the sequencing problem is inherent to the characteristics of natural languages,
+allowing LSTMs to grasp the concepts of words and sentences. This allows the use of LSTMS for the purpose of
+estimating the probability distribution of encountering various linguistic units, including words, sentences or even a
+whole document.
+
+## <a id="96"></a> Summary
+
+Whereas not obvious at first sight, many machine learning problems involve the analyzation of sequential data which
+cannot be solved by regular, fully connected neural networks. Recurrent neural networks, and especially LSTMs, pose
+the possibility to analyze such data in a fast way, allowing them to solve complex problems regarding natural
+languages and time series. In addition, recurrent neural networks will continue to play an important role within the
+field of machine learning and artificial intelligence because of the growing interests in voice-controlled electronics
+and speech recognition.
 
 
 
