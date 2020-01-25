@@ -46,6 +46,23 @@
     * [Predict](#4112)
  * [Summary](#42)
 
+#### Model Optimization
+* [MNIST Handwritten Digits classifier](#511)
+  * [A quick note on **image_data_format**](#5111)
+  * [Load MNIST Dataset](#5112)
+* [Define & train Model, Multy Layer Perceptron(one layer)](#512)   
+  * [Callbacks](#5121)
+  * [Evaluate trained model](#5122)
+  * [Understand Model Behavior During Training By Plotting History](#5123)
+* [Multy Layer Perceptron with two hidden layers](#513)
+* [Convolutional Neural Network](#514)
+* [Techniques to reduce Overfitting](#515)
+  * [L2 & L1 regularization](#5151)
+  * [Batch Normalization](#5152)
+  * [Dropouts](#5153)
+  * [Data Augmentation](#5154)
+* [Experiment](#516)  
+* [Summary](#517)
 
 ....
 
@@ -1173,7 +1190,7 @@ Graphs:
 ![alt text](https://github.com/fractus-io/keras-tutorial/blob/master/assets/image/mlp_two_layers_times_e_60.png "MNIST Two Layers Perceptron - times for each epoch")
 
 
-## <a id="513"></a>Convolutional Neural Network
+## <a id="514"></a>Convolutional Neural Network
 
 Now we will try to build simple Convolutional neural network(CNN). 
 Details about CNN is explained here TODO ...
@@ -1259,7 +1276,7 @@ Please note that to training time simple CNN is almost 2.5 times longer comparin
 
 
 
-## <a id="514"></a> Techniques to reduce Overfitting
+## <a id="515"></a> Techniques to reduce Overfitting
 
 By introducing simple CNN accuracy on test data after 60 epochs is 99,34%, accuracy on a training data is 100%. 
 Looks very well so far, but do we have a problem, why we have difference between training and test data set ?
@@ -1280,7 +1297,7 @@ This concept improves model’s performance on the unseen.
 
 Keras provides support for regularitaion.
 
-### <a id="5141"></a> L2 & L1 regularization
+### <a id="5151"></a> L2 & L1 regularization
 
 L1 and L2 are the most common types of regularization. These update the general cost function by adding another term known as the regularization term.
 
@@ -1381,7 +1398,7 @@ Graphs:
 
 TODO ... conclusion
 
-### <a id="5142"></a> Batch Normalization
+### <a id="5152"></a> Batch Normalization
 
 TODO ... describe batch norm...
 
@@ -1425,7 +1442,7 @@ Graphs:
 
 TODO ... conclusion
 
-### <a id="5143"></a> Dropouts
+### <a id="5153"></a> Dropouts
 
 This is the one of the most interesting types of regularization techniques. It produces very good results and is consequently the most frequently used regularization technique in the field of deep learning.
 
@@ -1518,7 +1535,7 @@ Graphs:
 
 TODO ... conclusion
 
-### <a id="5144"></a> Data Augmentation
+### <a id="5154"></a> Data Augmentation
 
 
 Another powerfull technique to reduce overfitting is to increase the size of the training data. 
@@ -1535,8 +1552,13 @@ Below is the sample code to implement it.
 TODO ... code, graphs, conclusion
 
 
-## <a id="515"></a> Summary
+## <a id="516"></a> Experiment
 
+TODO ...
+
+## <a id="517"></a> Summary
+
+TODO ...
 
 ......
 
