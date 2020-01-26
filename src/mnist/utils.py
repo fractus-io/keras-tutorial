@@ -24,7 +24,7 @@ def prepareData(train_images, train_labels, test_images, test_labels, is_conv_mo
         
     trainInputs = train_images
     testInputs = test_images
-            
+
     if is_conv_model == 'True':
         
         # reshape inputs
@@ -41,7 +41,7 @@ def prepareData(train_images, train_labels, test_images, test_labels, is_conv_mo
         # new shape will be (60000, 784)
         trainInputs = trainInputs.reshape(60000, 784)
         testInputs = testInputs.reshape(10000, 784)
-                
+
     # covert data to float32
     trainInputs.astype('float32')
     testInputs.astype('float32')

@@ -94,7 +94,42 @@ class Model:
             model.add(Flatten())
             model.add(Dense(64, activation='relu', kernel_regularizer = regularizers.l2(0.0001)))
             model.add(Dense(10, activation='softmax'))                
-            return model
+
+        elif model_name == 'le_net':
+            # Add the first convolution layer
+            model.add(Conv2D(filters = 20, kernel_size = (5, 5), padding = "same", activation='relu', input_shape = (28, 28, 1)))
+
+            # Add a ReLU activation function
+            #model.add(Activation(activation = "relu"))
+
+            # Add a pooling layer
+            model.add(MaxPooling2D(pool_size = (2, 2), strides =  (2, 2)))
+
+            # Add the second convolution layer
+            model.add(Conv2D(filters = 50, kernel_size = (5, 5), padding = "same", activation='relu'))
+
+            # Add a ReLU activation function
+            #model.add(Activation(activation = "relu"))
+
+            # Add a second pooling layer
+            model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2)))
+
+            # Flatten the network
+            model.add(Flatten())
+
+            # Add a fully-connected hidden layer
+            model.add(Dense(500, activation='relu'))
+
+            # Add a ReLU activation function
+            #model.add(Activation(activation = "relu"))
+
+            # Add a fully-connected output layer
+            model.add(Dense(10, activation='softmax'))
+
+            # Add a softmax activation function
+            #model.add(Activation("softmax"))
+
+           
                 
         return model    
 

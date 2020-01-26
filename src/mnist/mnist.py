@@ -43,6 +43,7 @@ def main():
                         conv_net_batch_norm
                         conv_net_l1
                         conv_net_l2
+                        le_net
                         all -> will train all models listed above
                         '''))
 
@@ -57,7 +58,8 @@ def main():
                             ('conv_net_dropout', 'True'), 
                             ('conv_net_batch_norm', 'True'),
                             ('conv_net_l1', 'True'),
-                            ('conv_net_l2', 'True'))
+                            ('conv_net_l2', 'True'),
+                            ('le_net', 'True'))
 
     if (any(model_name in i for i in existing_model_names)) : 
         # if model name is supported
