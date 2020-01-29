@@ -9,18 +9,46 @@ from keras.applications import vgg16, resnet50, mobilenet, inception_v3
 from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.applications.imagenet_utils import decode_predictions
- 
+from keras.applications import imagenet_utils
+
+import argparse,textwrap
+
+
 def main():
 
-    print("hello")
+    parser = argparse.ArgumentParser()
+    # construct the argument parse and parse the arguments
+    parser = argparse.ArgumentParser(description='Please specify model.',
+                                     usage='use "python %(prog)s --help" for more information',
+                                     formatter_class=argparse.RawTextHelpFormatter)
 
-    vgg_model = vgg16.VGG16(weights="imagenet")
+    parser.add_argument('-m', 
+                        '--model', 
+                        required=True,
+                        help= textwrap.dedent('''\
+                        Possible MODELS:
+                        vgg
+                        inception
+                        resnet
+                        mobilenet                        
+                        '''))
+
+    args = vars(parser.parse_args())
+    model_name = args["model"]
+
+    if model_name == 'vgg': 
+        classify_image_with_vgg()
+    elif model_name == 'inception': 
+        classify_image_with_inception()
+    elif model_name == 'resnet': 
+        classify_with_resnet()
+    elif model_name == 'mobilenet': 
+        classify_image_with_mobilenet()
+
+def classify_image_with_vgg():
     
-    inception_model = inception_v3.InceptionV3(weights='imagenet')
-    
-    resnet_model = resnet50.ResNet50(weights='imagenet')
-    
-    mobilenet_model = mobilenet.MobileNet(weights='imagenet')
+    model = vgg16.VGG16(weights="imagenet")
+    print(model.summary())
 
     filename = 'cat.jpg'
     
@@ -41,14 +69,44 @@ def main():
     processed_image = vgg16.preprocess_input(image_batch.copy())
     
     # get the predicted probabilities for each class
-    predictions = vgg_model.predict(processed_image)
+    predictions = model.predict(processed_image)
     # print predictions
     
     # convert the probabilities to class labels
     # We will get top 5 predictions which is the default
-    label = decode_predictions(predictions)
-    print(label)
-        
+    results = decode_predictions(predictions)
+    print(results)
+
+def classify_image_with_inception():
+
+   model = inception_v3.InceptionV3(weights='imagenet')
+   print(model.summary())
+
+def classify_with_resnet():
+
+    filename = 'cat.jpg'
+    
+    image = load_img(filename, target_size=(224, 224))
+
+    image = image.resize((224, 224))
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis=0)
+    image = imagenet_utils.preprocess_input(image)
+
+    model = resnet50.ResNet50(weights='imagenet')
+    print(model.summary())
+
+    # classify the input image
+    predicts = model.predict(image)  
+    results = imagenet_utils.decode_predictions(predicts)
+
+    print(results)
+
+def classify_image_with_mobilenet():
+
+    model = mobilenet.MobileNet(weights='imagenet')
+    print(model.summary())    
+
 if __name__ == '__main__':
     main()
 
