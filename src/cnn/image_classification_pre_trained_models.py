@@ -10,14 +10,17 @@ from keras.preprocessing.image import load_img
 from keras.preprocessing.image import img_to_array
 from keras.applications.imagenet_utils import decode_predictions
 from keras.applications import imagenet_utils
-
+from keras.applications.mobilenet import preprocess_input 
+from keras.applications.inception_v3 import preprocess_input
 import argparse,textwrap
 
-
+'''
+script shows how to use pretrained Keras models in order to classify image
+'''
 def main():
 
     parser = argparse.ArgumentParser()
-    # construct the argument parse and parse the arguments
+
     parser = argparse.ArgumentParser(description='Please specify model.',
                                      usage='use "python %(prog)s --help" for more information',
                                      formatter_class=argparse.RawTextHelpFormatter)
@@ -50,62 +53,54 @@ def classify_image_with_vgg():
     model = vgg16.VGG16(weights="imagenet")
     print(model.summary())
 
-    filename = 'cat.jpg'
+    image = load_image()
+    image = vgg16.preprocess_input(image)
     
-    original = load_img(filename, target_size=(224, 224))
-    
-    # convert the PIL image to a numpy array
-    # IN PIL - image is in (width, height, channel)
-    # In Numpy - image is in (height, width, channel)
-    numpy_image = img_to_array(original)
-    
-    # Convert the image / images into batch format
-    # expand_dims will add an extra dimension to the data at a particular axis
-    # We want the input matrix to the network to be of the form (batchsize, height, width, channels)
-    # Thus we add the extra dimension to the axis 0.
-    image_batch = np.expand_dims(numpy_image, axis=0)
-
-    # prepare the image for the VGG model
-    processed_image = vgg16.preprocess_input(image_batch.copy())
-    
-    # get the predicted probabilities for each class
-    predictions = model.predict(processed_image)
-    # print predictions
-    
-    # convert the probabilities to class labels
-    # We will get top 5 predictions which is the default
-    results = decode_predictions(predictions)
-    print(results)
+    predictions = model.predict(image)
+    print(decode_predictions(predictions))
 
 def classify_image_with_inception():
 
-   model = inception_v3.InceptionV3(weights='imagenet')
-   print(model.summary())
+    model = inception_v3.InceptionV3(weights='imagenet')
+    print(model.summary())
+
+    image = load_image()
+    image = inception_v3.preprocess_input(image)
+
+    predicts = model.predict(image)  
+    print(imagenet_utils.decode_predictions(predicts))
+
 
 def classify_with_resnet():
-
-    filename = 'cat.jpg'
-    
-    image = load_img(filename, target_size=(224, 224))
-
-    image = image.resize((224, 224))
-    image = img_to_array(image)
-    image = np.expand_dims(image, axis=0)
-    image = imagenet_utils.preprocess_input(image)
 
     model = resnet50.ResNet50(weights='imagenet')
     print(model.summary())
 
-    # classify the input image
-    predicts = model.predict(image)  
-    results = imagenet_utils.decode_predictions(predicts)
+    image = load_image()
+    image = imagenet_utils.preprocess_input(image)
 
-    print(results)
+    predicts = model.predict(image)  
+    print(imagenet_utils.decode_predictions(predicts))
 
 def classify_image_with_mobilenet():
 
     model = mobilenet.MobileNet(weights='imagenet')
-    print(model.summary())    
+    print(model.summary())
+
+    image = load_image()
+    image = mobilenet.preprocess_input(image)
+
+    predicts = model.predict(image)  
+    print(imagenet_utils.decode_predictions(predicts))
+
+def load_image():
+
+    filename = 'cat.jpg'
+
+    image = load_img(filename, target_size=(224, 224))
+    image = img_to_array(image)
+    image = np.expand_dims(image, axis=0)
+    return image
 
 if __name__ == '__main__':
     main()
